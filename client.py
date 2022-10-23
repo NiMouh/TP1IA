@@ -8,7 +8,7 @@ def pos2_to_pos1(x2):
 
 
 def decide_move(state, play):
-    # YOUR CODE GOES HERE....
+    # YOUR CODE GOES HERE.....
     return None
 
 
