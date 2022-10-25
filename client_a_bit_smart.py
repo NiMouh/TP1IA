@@ -19,10 +19,10 @@ def pos1_to_pos2(x):
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
 # (1 para as brancas 0 para as pretas)
 def f_obj(board, play):
-    # Dá peso ás jogadas para avisar que as peças se mantenham na defensiva durante muitas jogadas
+    # Dá peso às jogadas para avisar que as peças se mantenham na defensiva durante muitas jogadas
     weight_positions = 1e-1
-    # Declaração das peças brancas e pretas em modo string
-    # a,h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+    # Declaração das peças brancas e pretas em modo ‘string’
+    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
     w = 'abcdedghijklmnop'
     b = 'ABCDEFGHIJKLMNOP'
     # Declaração da valoração de cada uma das peças comidas
@@ -37,11 +37,11 @@ def f_obj(board, play):
         ex = board.find(p)
         # Caso contenha
         if ex >= 0:
-            # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts'
+            # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
-            # Declaração de uma variavel que transforma a posição em 1D para 2D (x,y) no tabuleiro
+            # Declaração de uma variavel que transforma a posição em 1D para 2D (x, y) no tabuleiro
             p2 = pos1_to_pos2(ex)
-            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela no eixo dos x (do lado dos brancos)
+            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
             score_w_positions += weight_positions * p2[0]
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -52,14 +52,14 @@ def f_obj(board, play):
         ex = board.find(p)
         # Caso contenha
         if ex >= 0:
-            # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts'
+            # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
-            # Declaração de uma variavel que transforma a posição em 1D para 2D (x,y) no tabuleiro
+            # Declaração de uma variavel que transforma a posição em 1D para 2D (x, y) no tabuleiro
             p2 = pos1_to_pos2(ex)
-            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela no eixo dos x (do lado dos pretos)
+            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
             score_b_positions += weight_positions * (7 - p2[0])
 
-    # Devolve a pontuação final como a diferença (tanto do numero de peças como movimentos feitos)
+    # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
     return (score_w + score_w_positions - score_b - score_b_positions) * pow(-1, play)
 
