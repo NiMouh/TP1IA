@@ -45,7 +45,7 @@ def f_obj(board, play):
             score_w_positions += weight_positions * p2[0]
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
-    # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças pretas
+    # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças pretas.
     score_b_positions = 0
     for i, p in enumerate(b):
         # Procura se o tabuleiro a analisar contêm essa peça
