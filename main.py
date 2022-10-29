@@ -18,6 +18,142 @@ def pos1_to_pos2(x):
     return [row, col]
 
 
+# Função posição, recebe uma peça, a posição em que se encontra e se é branca ou preta
+# e retorna uma pontuação dado a posição dessa peça no tabuleiro "Piece-Square Table"
+def position(piece, pos, player):
+    # Declaração das tabelas de posição
+    # Tabela de posição dos peões
+    pawn_table = [0, 0, 0, 0, 0, 0, 0, 0,
+                  50, 50, 50, 50, 50, 50, 50, 50,
+                  10, 10, 20, 30, 30, 20, 10, 10,
+                  5, 5, 15, 25, 25, 15, 5, 5,
+                  0, 0, 0, 30, 30, 0, 0, 0,
+                  5, -5, -10, 0, 0, -10, -5, 5,
+                  5, 10, 10, -20, -20, 10, 10, 5,
+                  0, 0, 0, 0, 0, 0, 0, 0]
+    # Tabela de posição dos cavalos
+    knight_table = [-50, -40, -30, -30, -30, -30, -40, -50,
+                    -40, -20, 0, 0, 0, 0, -20, -40,
+                    -30, 0, 10, 15, 15, 10, 0, -30,
+                    -30, 5, 15, 20, 20, 15, 5, -30,
+                    -30, 0, 15, 20, 20, 15, 0, -30,
+                    -30, 5, 10, 15, 15, 10, 5, -30,
+                    -40, -20, 0, 5, 5, 0, -20, -40,
+                    -50, -40, -30, -30, -30, -30, -40, -50]
+    # Tabela de posição dos bispos
+    bishop_table = [-20, -10, -10, -10, -10, -10, -10, -20,
+                    -10, 0, 0, 0, 0, 0, 0, -10,
+                    -10, 0, 5, 10, 10, 5, 0, -10,
+                    -10, 5, 5, 10, 10, 5, 5, -10,
+                    -10, 0, 10, 10, 10, 10, 0, -10,
+                    -10, 10, 10, 10, 10, 10, 10, -10,
+                    -10, 5, 0, 0, 0, 0, 5, -10,
+                    -20, -10, -10, -10, -10, -10, -10, -20]
+    # Tabela de posição das torres
+    rook_table = [0, 0, 0, 0, 0, 0, 0, 0,
+                  5, 10, 10, 10, 10, 10, 10, 5,
+                  -5, 0, 0, 0, 0, 0, 0, -5,
+                  -5, 0, 0, 0, 0, 0, 0, -5,
+                  -5, 0, 0, 0, 0, 0, 0, -5,
+                  -5, 0, 0, 0, 0, 0, 0, -5,
+                  -5, 0, 0, 0, 0, 0, 0, -5,
+                  0, 0, 0, 5, 5, 0, 0, 0]
+    # Tabela de posição da rainha
+    queen_table = [-20, -10, -10, -5, -5, -10, -10, -20,
+                   -10, 0, 0, 0, 0, 0, 0, -10,
+                   -10, 0, 5, 5, 5, 5, 0, -10,
+                   -5, 0, 5, 5, 5, 5, 0, -5,
+                   0, 0, 5, 5, 5, 5, 0, -5,
+                   -10, 5, 5, 5, 5, 5, 0, -10,
+                   -10, 0, 5, 0, 0, 0, 0, -10,
+                   -20, -10, -10, -5, -5, -10, -10, -20]
+    # Tabela de posição do rei
+    king_table = [-30, -40, -40, -50, -50, -40, -40, -30,
+                  -30, -40, -40, -50, -50, -40, -40, -30,
+                  -30, -40, -40, -50, -50, -40, -40, -30,
+                  -30, -40, -40, -50, -50, -40, -40, -30,
+                  -20, -30, -30, -40, -40, -30, -30, -20,
+                  -10, -20, -20, -20, -20, -20, -20, -10,
+                  20, 20, 0, 0, 0, 0, 20, 20,
+                  20, 30, 10, 0, 0, 10, 30, 20]
+    # Tabela de posição do rei no fim de jogo
+    king_end_table = [-50, -40, -30, -20, -20, -30, -40, -50,
+                      -30, -20, -10, 0, 0, -10, -20, -30,
+                      -30, -10, 20, 30, 30, 20, -10, -30,
+                      -30, -10, 30, 40, 40, 30, -10, -30,
+                      -30, -10, 30, 40, 40, 30, -10, -30,
+                      -30, -10, 20, 30, 30, 20, -10, -30,
+                      -30, -30, 0, 0, 0, 0, -30, -30,
+                      -50, -30, -30, -30, -30, -30, -30, -50]
+
+    # Se a peça for um peão (está entre i e p)
+    if piece == 'i' or piece == 'j' or piece == 'k' or piece == 'l' or piece == 'm' or piece == 'n' or piece == 'o' or piece == 'p' \
+            or piece == 'I' or piece == 'J' or piece == 'K' or piece == 'L' or piece == 'M' or piece == 'N' or piece == 'O' or piece == 'P':
+        # Se a peça for as brancas
+        if player:
+            # Retorna a pontuação da tabela de posição do peão
+            return pawn_table[pos]
+        # Se a peça for preta
+        else:
+            # Retorna a pontuação da tabela de posição do peão invertida
+            return pawn_table[63 - pos]
+
+    # Se a peça for um cavalo (é o 'b' e o 'g')
+    elif piece == 'b' or piece == 'g' or piece == 'B' or piece == 'G':
+        # Se a peça for branca
+        if player:
+            # Retorna a pontuação da tabela de posição do cavalo
+            return knight_table[pos]
+        # Se a peça for preta
+        else:
+            # Retorna a pontuação da tabela de posição do cavalo invertida
+            return knight_table[63 - pos]
+
+    # Se a peça for um bispo (é o 'c' e o 'f')
+    elif piece == 'c' or piece == 'f' or piece == 'C' or piece == 'F':
+        # Se a peça for branca
+        if player:
+            # Retorna a pontuação da tabela de posição do bispo
+            return bishop_table[pos]
+        # Se a peça for preta
+        else:
+            # Retorna a pontuação da tabela de posição do bispo invertida
+            return bishop_table[63 - pos]
+
+    # Se a peça for uma torre (é o 'a' e o 'h')
+    elif piece == 'a' or piece == 'h' or piece == 'A' or piece == 'H':
+        # Se a peça for branca
+        if player:
+            # Retorna a pontuação da tabela de posição da torre
+            return rook_table[pos]
+        # Se a peça for preta
+        else:
+            # Retorna a pontuação da tabela de posição da torre invertida
+            return rook_table[63 - pos]
+
+    # Se a peça for uma rainha (é o 'd')
+    elif piece == 'd' or piece == 'D':
+        # Se a peça for branca
+        if player:
+            # Retorna a pontuação da tabela de posição da rainha
+            return queen_table[pos]
+        # Se a peça for preta
+        else:
+            # Retorna a pontuação da tabela de posição da rainha invertida
+            return queen_table[63 - pos]
+
+    # Se a peça for um rei (é o 'e')
+    elif piece == 'e' or piece == 'E':
+        # Se a peça for branca
+        if player:
+            # Retorna a pontuação da tabela de posição do rei
+            return king_table[pos]
+        # Se a peça for preta
+        else:
+            # Retorna a pontuação da tabela de posição do rei invertida
+            return king_table[63 - pos]
+
+
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
 # (1 para as brancas 0 para as pretas)
 def f_obj(board, play):
@@ -28,7 +164,7 @@ def f_obj(board, play):
     w = 'abcdedghijklmnop'
     b = 'ABCDEFGHIJKLMNOP'
     # Declaração da valoração de cada uma das peças comidas
-    pts = [10, 7, 6, 100, 9999, 6, 7, 10, 1, 1, 1, 1, 1, 1, 1, 1]
+    pts = [100, 70, 60, 1000, 9999, 60, 70, 100, 10, 10, 10, 10, 10, 10, 10, 10]
     # Declaração da variavel que representa a pontuação obtida pelas peças brancas
     score_w = 0
     # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças brancas
@@ -41,184 +177,8 @@ def f_obj(board, play):
         if ex >= 0:
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
-            # Declaração de uma variavel que transforma a posição em 1D para 2D (x, y) no tabuleiro
-            p2 = pos1_to_pos2(ex)
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
-            score_w_positions += weight_positions * p2[0]
-
-            # É pretendido aqui avaliar a posição das peças no tabuleiro, para isso é feito uma análise usando uma
-            # "Piece-Square Table"
-
-            # Caso a peça seja um peão
-            if p == 'i' or p == 'j' or p == 'k' or p == 'l' or p == 'm' or p == 'n' or p == 'o' or p == 'p':
-                # Caso estejam na linha 6
-                if p2[0] == 6:
-                    # Aumenta a pontuação
-                    score_w += 50
-                # Caso estejam na linha 5, os peões centrais aumentam 30 pontos, os laterais 20 e os extremos 10
-                elif p2[0] == 5:
-                    if p2[1] == 0 or p2[1] == 7 or p2[1] == 1 or p2[1] == 6:
-                        score_w += 10
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w += 20
-                    else:
-                        score_w += 30
-                # Caso estejam na linha 4, os peões centrais aumentam 25 pontos, os laterais 10 e os extremos 5
-                elif p2[0] == 4:
-                    if p2[1] == 0 or p2[1] == 7 or p2[1] == 1 or p2[1] == 6:
-                        score_w += 5
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w += 10
-                    else:
-                        score_w += 25
-                # Caso estejam na linha 3, os peões centrais aumentam 20 pontos, os restantes 0
-                elif p2[0] == 3:
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 20
-                # Caso estejam na linha 2, os peões centrais aumentam 0 pontos, os laterais -10 e os extremos 5
-                elif p2[0] == 2:
-                    if p2[1] == 0 or p2[1] == 7:
-                        score_w += 5
-                    elif p2[1] == 1 or p2[1] == 6 or p2[1] == 2 or p2[1] == 5:
-                        score_w -= 10
-                # Caso estejam na linha 1, os peões centrais diminuem 20 pontos, os laterais aumentam 10 e os extremos 5
-                elif p2[0] == 1:
-                    if p2[1] == 0 or p2[1] == 7:
-                        score_w += 5
-                    elif p2[1] == 1 or p2[1] == 6 or p2[1] == 2 or p2[1] == 5:
-                        score_w += 10
-                    else:
-                        score_w -= 20
-
-            # Caso seja um cavalo
-            elif p == 'b' or p == 'g':
-                # Caso esteja no extremo do tabuleiro
-                if p2[0] == 0 or p2[0] == 7 or p2[1] == 0 or p2[1] == 7:
-                    # Se for no canto ao centro diminui 30 pontos se for num nos 4 cantos diminui 50 pontos
-                    if p2[0] == 0 and p2[1] == 0 or p2[0] == 0 and p2[1] == 7 or p2[0] == 7 and p2[1] == 0 or p2[
-                        0] == 7 and p2[1] == 7:
-                        score_w -= 50
-                    else:
-                        score_w -= 30
-                # Caso esteja na linha 6
-                elif p2[0] == 6:
-                    # Decrementa a pontuação em 40 nos extremos e em 20 nos laterais e em 0 no centro
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w -= 0
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w -= 20
-                    else:
-                        score_w -= 40
-                # Caso esteja na linha 5
-                elif p2[0] == 5:
-                    # Decrementa a pontuação em 30 nos extremos e em 10 nos laterais e em 0 no centro
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w -= 0
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w -= 10
-                    else:
-                        score_w -= 30
-                # Caso esteja na linha 4
-                elif p2[0] == 4:
-                    # Incrementa a pontuação em 15 nas laterais e em 20 no centro
-                    if p2[1] == 2 or p2[1] == 3 or p2[1] == 4 or p2[1] == 5:
-                        score_w += 20
-                    elif p2[1] == 1 or p2[1] == 6:
-                        score_w += 15
-                # Caso esteja na linha 3
-                elif p2[0] == 3:
-                    # Incrementa a pontuação em 15 nas laterais e em 20 no centro
-                    if p2[1] == 2 or p2[1] == 3 or p2[1] == 4 or p2[1] == 5:
-                        score_w += 20
-                    elif p2[1] == 1 or p2[1] == 6:
-                        score_w += 15
-                # Caso esteja na linha 2
-                elif p2[0] == 2:
-                    # Incrementa de 5 pontos de 1-6, 10 pontos de 2-5 e 15 pontos de 3-4
-                    if p2[1] == 1 or p2[1] == 6:
-                        score_w += 5
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w += 10
-                    elif p2[1] == 3 or p2[1] == 4:
-                        score_w += 15
-                # Caso esteja na linha 1
-                elif p2[0] == 1:
-                    # Decrementa de -20 pontos de 1-6, 0 pontos de 2-5 e 5 pontos de 3-4
-                    if p2[1] == 1 or p2[1] == 6:
-                        score_w -= 20
-                    elif p2[1] == 3 or p2[1] == 4:
-                        score_w += 5
-
-            # Caso seja um bispo
-            elif p == 'c' or p == 'f':
-                # Caso esteja no extremo do tabuleiro
-                if p2[0] == 0 or p2[0] == 7 or p2[1] == 0 or p2[1] == 7:
-                    # Se for no canto ao centro diminui 10 pontos se for num nos 4 cantos diminui 20 pontos
-                    if p2[0] == 0 and p2[1] == 0 or p2[0] == 0 and p2[1] == 7 or p2[0] == 7 and p2[1] == 0 or p2[
-                        0] == 7 and p2[1] == 7:
-                        score_w -= 20
-                    else:
-                        score_w -= 10
-                # Caso esteja na linha 5
-                elif p2[0] == 5:
-                    # Incremente a pontuação em 5 pontos de 2 – 5 e 10 pontos de 3 – 4
-                    if p2[1] == 2 or p2[1] == 5:
-                        score_w += 5
-                    elif p2[1] == 3 or p2[1] == 4:
-                        score_w += 10
-                # Caso esteja na linha 4
-                elif p2[0] == 4:
-                    # Incrementa a pontuação em 5 pontos de 2 – 5 e 10 pontos de 3 – 4
-                    if p2[1] == 1 or p2[1] == 2 or p2[1] == 5 or p2[1] == 6:
-                        score_w += 5
-                    elif p2[1] == 3 or p2[1] == 4:
-                        score_w += 10
-                # Caso esteja na linha 3
-                elif p2[0] == 3:
-                    # Incrementa a pontuação em 10 pontos de 2 – 5
-                    if p2[1] == 2 or p2[1] == 5 or p2[1] == 3 or p2[1] == 4:
-                        score_w += 10
-                # Caso esteja na linha 2
-                elif p2[0] == 2:
-                    # Incrementa a pontuação em 5 pontos de 1 – 6
-                    if p2[1] == 1 or p2[1] == 6:
-                        score_w += 5
-
-            # Caso seja uma torre
-            elif p == 'a' or p == 'h':
-                # Caso esteja nos extremos do tabuleiro nas linhas 1,2,3,4 e 5
-                if p2[0] == 1 or p2[0] == 2 or p2[0] == 3 or p2[0] == 4 or p2[0] == 5:
-                    if p2[1] == 0 or p2[1] == 7:
-                        # Decrementa a pontuação em 5 pontos
-                        score_w -= 5
-                # Caso esteja na linha 6
-                elif p2[0] == 6:
-                    # Caso esteja nos cantos incrementa 5 pontos senão incrementa 10 pontos
-                    if p2[1] == 0 or p2[1] == 7:
-                        score_w += 5
-                    else:
-                        score_w += 10
-                # Caso esteja na linha 0
-                elif p2[0] == 0:
-                    # Caso esteja no centro, incrementa 5 pontos
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 5
-
-            # Caso seja uma rainha
-            elif p == 'd':
-                # Caso esteja nos cantos do tabuleiro
-                if p2[0] == 0 and p2[1] == 0 or p2[0] == 0 and p2[1] == 7 or p2[0] == 7 and p2[1] == 0 or p2[0] == 7 and \
-                        p2[1] == 7:
-                    # Decrementa a pontuação em 20 pontos
-                    score_w -= 10
-                # Caso esteja nas bordas do tabuleiro decrementa 10 pontos
-                elif p2[0] == 0 or p2[0] == 7 or p2[1] == 0 or p2[1] == 7:
-                    score_w -= 10
-                # Caso esteja entre as linhas 1 e 6 e entre as colunas 2 e 5, incrementa 5 pontos
-                elif 0 < p2[0] < 7 and 1 < p2[1] < 6:
-                    score_w += 5
-
-            # Caso seja um rei (POR FAZER)
+            score_w_positions += position(p, ex, 1) * weight_positions * (ex % 8)
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -231,183 +191,8 @@ def f_obj(board, play):
         if ex >= 0:
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
-            # Declaração de uma variavel que transforma a posição em 1D para 2D (x, y) no tabuleiro
-            p2 = pos1_to_pos2(ex)
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
-            score_b_positions += weight_positions * (7 - p2[0])
-
-            # Caso seja um peão
-            if p == 'I' or p == 'J' or p == 'K' or p == 'L' or p == 'M' or p == 'N' or p == 'O' or p == 'P':
-                # Caso esteja na linha 1
-                if p2[0] == 1:
-                    # Aumenta a pontuação
-                    score_w += 50
-                # Caso esteja na linha 2, os peões centrais aumentam 30 pontos, os laterais 20 e os extremos 10
-                elif p2[0] == 2:
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 30
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w += 20
-                    else:
-                        score_w += 10
-                # Caso esteja na linha 3, os peões centrais aumentam 25 pontos, os laterais 10 e os extremos 5
-                elif p2[0] == 3:
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 25
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w += 10
-                    else:
-                        score_w += 5
-                # Caso esteja na linha 4, os peões centrais aumentam 20 pontos, os restantes 0
-                elif p2[0] == 4:
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 20
-                # Caso esteja na linha 5, os peões centrais aumentam 0 pontos, os laterais -10 e os extremos 5
-                elif p2[0] == 5:
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 0
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w -= 10
-                    else:
-                        score_w -= 5
-                # Caso esteja na linha 6, os peões centrais diminuem 20 pontos, os laterais aumentam 10 e os extremos 5
-                elif p2[0] == 6:
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w -= 20
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_w += 10
-                    else:
-                        score_w += 5
-
-            # Caso seja um cavalo
-            elif p == 'B' or p == 'G':
-                # Caso esteja no extremo do tabuleiro
-                if p2[0] == 0 or p2[0] == 7 or p2[1] == 0 or p2[1] == 7:
-                    # Se for no canto ao centro diminui 30 pontos se for num nos 4 cantos diminui 50 pontos
-                    if p2[0] == 0 and p2[1] == 0 or p2[0] == 0 and p2[1] == 7 or p2[0] == 7 and p2[1] == 0 or p2[
-                        0] == 7 and p2[1] == 7:
-                        score_b -= 50
-                    else:
-                        score_b -= 30
-                # Caso esteja na linha 1
-                elif p2[0] == 1:
-                    # Decrementa a pontuação em 40 nos extremos e em 20 nos laterais e em 0 no centro
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_b -= 0
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_b -= 20
-                    else:
-                        score_b -= 40
-                # Caso esteja na linha 2
-                elif p2[0] == 2:
-                    # Decrementa a pontuação em 30 nos extremos e em 10 nos laterais e em 0 no centro
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_b -= 0
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_b -= 10
-                    else:
-                        score_b -= 30
-                # Caso esteja na linha 3
-                elif p2[0] == 3:
-                    # Incrementa a pontuação em 15 nas laterais e em 20 no centro
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_b += 20
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_b += 15
-                # Caso esteja na linha 4
-                elif p2[0] == 4:
-                    # Incrementa a pontuação em 15 nas laterais e em 20 no centro
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_b += 20
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_b += 15
-                # Caso esteja na linha 5
-                elif p2[0] == 5:
-                    # Incrementa de 5 pontos de 1-6, 10 pontos de 2-5 e 15 pontos de 3-4
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_b += 15
-                    elif p2[1] == 2 or p2[1] == 5:
-                        score_b += 10
-                    elif p2[1] == 1 or p2[1] == 6:
-                        score_b += 5
-                # Caso esteja na linha 6
-                elif p2[0] == 6:
-                    # Decrementa de -20 pontos de 1-6, 0 pontos de 2-5 e 5 pontos de 3-4
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_b -= 20
-                    elif p2[1] == 1 or p2[1] == 6:
-                        score_b += 5
-
-            # Caso seja um bispo
-            elif p == 'C' or p == 'F':
-                # Caso esteja no extremo do tabuleiro
-                if p2[0] == 0 or p2[0] == 7 or p2[1] == 0 or p2[1] == 7:
-                    # Se for no canto ao centro diminui 10 pontos se for num nos 4 cantos diminui 20 pontos
-                    if p2[0] == 0 and p2[1] == 0 or p2[0] == 0 and p2[1] == 7 or p2[0] == 7 and p2[1] == 0 or p2[
-                        0] == 7 and p2[1] == 7:
-                        score_w -= 20
-                    else:
-                        score_w -= 10
-                # Caso esteja na linha 2
-                elif p2[0] == 2:
-                    # Incremente a pontuação em 5 pontos de 2 – 5 e 10 pontos de 3 – 4
-                    if p2[1] == 2 or p2[1] == 5:
-                        score_w += 5
-                    elif p2[1] == 3 or p2[1] == 4:
-                        score_w += 10
-                # Caso esteja na linha 3
-                elif p2[0] == 3:
-                    # Incrementa a pontuação em 5 pontos de 2 – 5 e 10 pontos de 3 – 4
-                    if p2[1] == 1 or p2[1] == 2 or p2[1] == 5 or p2[1] == 6:
-                        score_w += 5
-                    elif p2[1] == 3 or p2[1] == 4:
-                        score_w += 10
-                # Caso esteja na linha 4
-                elif p2[0] == 4:
-                    # Incrementa a pontuação em 10 pontos de 2 – 5
-                    if p2[1] == 2 or p2[1] == 5 or p2[1] == 3 or p2[1] == 4:
-                        score_w += 10
-                # Caso esteja na linha 5
-                elif p2[0] == 5:
-                    # Incrementa a pontuação em 5 pontos de 1 – 6
-                    if p2[1] == 1 or p2[1] == 6:
-                        score_w += 5
-
-            # Caso seja uma torre
-            elif p == 'A' or p == 'H':
-                # Caso esteja nos extremos do tabuleiro nas linhas 1,2,3,4 e 5
-                if p2[0] == 1 or p2[0] == 2 or p2[0] == 3 or p2[0] == 4 or p2[0] == 5:
-                    if p2[1] == 0 or p2[1] == 7:
-                        # Decrementa a pontuação em 5 pontos
-                        score_w -= 5
-                # Caso esteja na linha 1
-                elif p2[0] == 1:
-                    # Caso esteja nos cantos incrementa 5 pontos senão incrementa 10 pontos
-                    if p2[1] == 0 or p2[1] == 7:
-                        score_w += 5
-                    else:
-                        score_w += 10
-                # Caso esteja na linha 7
-                elif p2[0] == 7:
-                    # Caso esteja no centro, incrementa 5 pontos
-                    if p2[1] == 3 or p2[1] == 4:
-                        score_w += 5
-
-            # Caso seja uma rainha
-            elif p == 'D':
-                # Caso esteja nos cantos do tabuleiro
-                if p2[0] == 0 and p2[1] == 0 or p2[0] == 0 and p2[1] == 7 or p2[0] == 7 and p2[1] == 0 or p2[0] == 7 and \
-                        p2[1] == 7:
-                    # Decrementa a pontuação em 20 pontos
-                    score_w -= 10
-                # Caso esteja nas bordas do tabuleiro decrementa 10 pontos
-                elif p2[0] == 0 or p2[0] == 7 or p2[1] == 0 or p2[1] == 7:
-                    score_w -= 10
-                # Caso esteja entre as linhas 1 e 6 e entre as colunas 2 e 5, incrementa 5 pontos
-                elif 0 < p2[0] < 7 and 1 < p2[1] < 6:
-                    score_w += 5
-
-            # Caso seja um rei (POR FAZER)
+            score_b_positions += position(p, ex, 0) * weight_positions * (7 - ex % 8)
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="nada de jeito">
+    <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="tentativa de piece-square table">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +76,7 @@
       <workItem from="1666817400208" duration="4274000" />
       <workItem from="1667037576074" duration="2446000" />
       <workItem from="1667047737946" duration="15429000" />
-      <workItem from="1667072332672" duration="4999000" />
+      <workItem from="1667072332672" duration="7917000" />
     </task>
     <task id="LOCAL-00001" summary="eeee">
       <created>1666555224087</created>
@@ -119,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667069496453</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="tentativa de piece-square table">
+      <created>1667077522169</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1667077522169</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,6 +151,7 @@
     <MESSAGE value="teste" />
     <MESSAGE value="fixes do prof" />
     <MESSAGE value="nada de jeito" />
-    <option name="LAST_COMMIT_MESSAGE" value="nada de jeito" />
+    <MESSAGE value="tentativa de piece-square table" />
+    <option name="LAST_COMMIT_MESSAGE" value="tentativa de piece-square table" />
   </component>
 </project>
