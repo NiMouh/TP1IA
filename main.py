@@ -14,3 +14,11 @@ if __name__ == '__main__':
     print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+# Priorizar movimentos onde o cavalo está no centro do tabuleiro
+# Priorizar movimentos onde o cavalo não fica nas bordas do tabuleiro
+# Priorizar movimentos onde os peões do centro são preservados
+# Priorizar movimentos onde o rei fica mais protegido
+# Priorizar movimentos onde as peças á frente do rei estão protegidas por mais alguma peça
+# Fazer verificação se alguma peça está prestes a comer o rei,
+# e colocar peças á frente do rei para proteger ou mexer o rei

@@ -1,9 +1,10 @@
 import socket, sys
 import math
+import random
 
 interactive_flag = False
 
-depth_analysis = 1
+depth_analysis = 4
 
 
 def pos2_to_pos1(x2):
@@ -16,60 +17,29 @@ def pos1_to_pos2(x):
     return [row, col]
 
 
-# Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
-# (1 para as brancas 0 para as pretas)
 def f_obj(board, play):
-    # Dá peso às jogadas para avisar que as peças se mantenham na defensiva durante muitas jogadas
     weight_positions = 1e-1
-    # Declaração das peças brancas e pretas em modo ‘string’
-    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
     w = 'abcdedghijklmnop'
     b = 'ABCDEFGHIJKLMNOP'
-    # Declaração da valoração de cada uma das peças comidas
     pts = [10, 7, 6, 100, 9999, 6, 7, 10, 1, 1, 1, 1, 1, 1, 1, 1]
-    # Declaração da variavel que representa a pontuação obtida pelas peças brancas
     score_w = 0
-    # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças brancas
     score_w_positions = 0
-
     for i, p in enumerate(w):
-        # Procura se o tabuleiro a analisar contêm essa peça
         ex = board.find(p)
-        # Caso contenha
         if ex >= 0:
-            # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
-            # Declaração de uma variavel que transforma a posição em 1D para 2D (x, y) no tabuleiro
             p2 = pos1_to_pos2(ex)
-            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
             score_w_positions += weight_positions * p2[0]
-    # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
-    # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças pretas.
     score_b_positions = 0
     for i, p in enumerate(b):
-        # Procura se o tabuleiro a analisar contêm essa peça
         ex = board.find(p)
-        # Caso contenha
         if ex >= 0:
-            # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
-            # Declaração de uma variavel que transforma a posição em 1D para 2D (x, y) no tabuleiro
             p2 = pos1_to_pos2(ex)
-            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
             score_b_positions += weight_positions * (7 - p2[0])
 
-    # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
-    # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
     return (score_w + score_w_positions - score_b - score_b_positions) * pow(-1, play)
-
-# Priorizar movimentos onde o cavalo está no centro do tabuleiro
-# Priorizar movimentos onde o cavalo não fica nas bordas do tabuleiro
-# Priorizar movimentos onde os peões do centro são preservados
-# Priorizar movimentos onde o rei fica mais protegido
-# Priorizar movimentos onde as peças á frente do rei estão protegidas por mais alguma peça
-# Fazer verificação se alguma peça está prestes a comer o rei,
-# e colocar peças á frente do rei para proteger ou mexer o rei
 
 
 def find_node(tr, id):
@@ -182,27 +152,28 @@ def get_positions_directions(state, piece, p2, directions):
                     ret.append([p2[0] - r, p2[1]])
                 continue
             if d[0] == 'PS2':
-                if p2[0] + r <= 7 or p2[1] + 1 <= 7:
+                if p2[0] + r <= 7 and p2[1] + 1 <= 7:
                     if state[pos2_to_pos1([p2[0] + r, p2[1] + 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] + r, p2[1] + 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] + r, p2[1] + 1])
 
-                if p2[0] + r <= 7 or p2[1] - 1 >= 0:
+                if p2[0] + r <= 7 and p2[1] - 1 >= 0:
                     if state[pos2_to_pos1([p2[0] + r, p2[1] - 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] + r, p2[1] - 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] + r, p2[1] - 1])
                 continue
             if d[0] == 'PN2':
-                if p2[0] - r >= 0 or p2[1] + 1 <= 7:
+                if p2[0] - r >= 0 and p2[1] + 1 <= 7:
                     if state[pos2_to_pos1([p2[0] - r, p2[1] + 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] - r, p2[1] + 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] - r, p2[1] + 1])
 
-                if p2[0] - r >= 0 or p2[1] - 1 >= 0:
+                if p2[0] - r >= 0 and p2[1] - 1 >= 0:
                     if state[pos2_to_pos1([p2[0] - r, p2[1] - 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] - r, p2[1] - 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] - r, p2[1] - 1])
                 continue
+
             if d[0] == 'H':
                 if p2[0] - 2 >= 0 and p2[1] - 1 >= 0:
                     if state[pos2_to_pos1([p2[0] - 2, p2[1] - 1])] == 'z' or abs(
@@ -358,20 +329,200 @@ def insert_state_tree(tr, nv, parent):
     return tr
 
 
-def expand_tree(tr, n, play):
+# #####################################################################################################################
+# PRINT Board
+
+pieces = ''.join(chr(9812 + x) for x in range(12))
+pieces = u' ' + pieces[:6][::-1] + pieces[6:]
+allbox = ''.join(chr(9472 + x) for x in range(200))
+box = [allbox[i] for i in (2, 0, 12, 16, 20, 24, 44, 52, 28, 36, 60)]
+(vbar, hbar, ul, ur, ll, lr, nt, st, wt, et, plus) = box
+
+h3 = hbar * 3
+
+# useful constant unicode strings to draw the square borders
+
+topline = ul + (h3 + nt) * 7 + h3 + ur
+midline = wt + (h3 + plus) * 7 + h3 + et
+botline = ll + (h3 + st) * 7 + h3 + lr
+
+tpl = u' {0} ' + vbar
+
+
+def inter(*args):
+    """Return a unicode string with a line of the chessboard.
+
+    args are 8 integers with the values
+        0 : empty square
+        1, 2, 3, 4, 5, 6: white pawn, knight, bishop, rook, queen, king
+        -1, -2, -3, -4, -5, -6: same black pieces
+    """
+    assert len(args) == 8
+    return vbar + u''.join((tpl.format(pieces[a]) for a in args))
+
+
+print
+pieces
+print
+' '.join(box)
+print
+
+start_position = (
+        [
+            (-4, -2, -3, -5, -6, -3, -2, -4),
+            (-1,) * 8,
+        ] +
+        [(0,) * 8] * 4 +
+        [
+            (1,) * 8,
+            (4, 2, 3, 5, 6, 3, 2, 4),
+        ]
+)
+
+
+def _game(position):
+    yield topline
+    yield inter(*position[0])
+    for row in position[1:]:
+        yield midline
+        yield inter(*row)
+    yield botline
+
+
+game = lambda squares: "\n".join(_game(squares))
+game.__doc__ = "Return the chessboard as a string for a given position."
+
+
+# #####################################################################################################################
+
+
+def get_description_piece(piece):
+    if ord(piece) < 97:
+        ret = 'Black '
+    else:
+        ret = 'White '
+    if piece.lower() in ('a', 'h'):
+        ret = ret + 'Tower'
+    elif piece.lower() in ('b', 'g'):
+        ret = ret + 'Horse'
+    elif piece.lower() in ('c', 'f'):
+        ret = ret + 'Bishop'
+    elif piece.lower() == 'd':
+        ret = ret + 'Queen'
+    elif piece.lower() == 'e':
+        ret = ret + 'King'
+    else:
+        ret = ret + 'Pawn'
+    return ret
+
+
+def description_move(prev, cur, idx, nick):
+    # print('description_move()')
+    ret = 'Move [%d - %s]: ' % (idx, nick)
+
+    cur_blank = [i for i, ltr in enumerate(cur) if ltr == 'z']
+    prev_not_blank = [i for i, ltr in enumerate(prev) if ltr != 'z']
+    # print(cur_blank)
+    # print(prev_not_blank)
+    moved = list(set(cur_blank) & set(prev_not_blank))
+    # print(moved)
+    moved = moved[0]
+
+    desc_piece = get_description_piece(prev[moved])
+
+    fr = pos1_to_pos2(moved)
+    to = pos1_to_pos2(cur.find(prev[moved]))
+    # print(fr)
+    # print(to)
+
+    ret = ret + desc_piece + ' (%d, %d) --> (%d, %d)' % (fr[0], fr[1], to[0], to[1])
+    if prev[pos2_to_pos1(to)] != 'z':
+        desc_piece = get_description_piece(prev[pos2_to_pos1(to)])
+        ret = ret + ' eaten ' + desc_piece
+    return ret
+
+
+def show_board(prev, cur, idx, nick):
+    print('print_board(obj: %f)...' % idx)
+    state_show = []
+    for r in range(0, 8):
+        row = []
+        for c in range(0, 8):
+            if cur[pos2_to_pos1([r, c])] == 'z':
+                row.append(0)
+
+            if cur[pos2_to_pos1([r, c])] == 'a':
+                row.append(-4)
+            if cur[pos2_to_pos1([r, c])] == 'b':
+                row.append(-2)
+            if cur[pos2_to_pos1([r, c])] == 'c':
+                row.append(-3)
+            if cur[pos2_to_pos1([r, c])] == 'd':
+                row.append(-5)
+            if cur[pos2_to_pos1([r, c])] == 'e':
+                row.append(-6)
+            if cur[pos2_to_pos1([r, c])] == 'f':
+                row.append(-3)
+            if cur[pos2_to_pos1([r, c])] == 'g':
+                row.append(-2)
+            if cur[pos2_to_pos1([r, c])] == 'h':
+                row.append(-4)
+            if ord('i') <= ord(cur[pos2_to_pos1([r, c])]) <= ord('p'):
+                row.append(-1)
+
+            if cur[pos2_to_pos1([r, c])] == 'A':
+                row.append(4)
+            if cur[pos2_to_pos1([r, c])] == 'B':
+                row.append(2)
+            if cur[pos2_to_pos1([r, c])] == 'C':
+                row.append(3)
+            if cur[pos2_to_pos1([r, c])] == 'D':
+                row.append(5)
+            if cur[pos2_to_pos1([r, c])] == 'E':
+                row.append(6)
+            if cur[pos2_to_pos1([r, c])] == 'F':
+                row.append(3)
+            if cur[pos2_to_pos1([r, c])] == 'G':
+                row.append(2)
+            if cur[pos2_to_pos1([r, c])] == 'H':
+                row.append(4)
+            if ord('I') <= ord(cur[pos2_to_pos1([r, c])]) <= ord('P'):
+                row.append(1)
+        state_show.append(tuple(row))
+
+    ret = game(state_show) + '\n'
+
+    if prev is None:
+        return ret
+    ret = ret + description_move(prev, cur, idx, nick)
+
+    return ret
+
+
+def expand_tree(tr, dep, n, play):
     if n == 0:
         return tr
     suc = sucessor_states(tr[0], play)
     for s in suc:
-        tr = insert_state_tree(tr, expand_tree([s, 0, f_obj(s, play), []], n - 1, play), tr)
+        tr = insert_state_tree(tr, expand_tree([s, random.random(), dep + 1, 0, f_obj(s, play), []], dep + 1, n - 1,
+                                               1 - play), tr)
     return tr
+
+
+def show_tree(tr, play, nick, depth):
+    if len(tr) == 0:
+        return
+    print('DEPTH %d' % depth)
+    print('%s' % show_board(None, tr[0], f_obj(tr[0], play), nick))
+    for t in tr[-1]:
+        show_tree(t, play, nick, depth + 1)
 
 
 def get_father(tr, st):
     if len(tr) == 0:
         return None
     for sun in tr[-1]:
-        if sun[0] == st[0]:
+        if sun[1] == st[1]:
             return tr
 
     for sun in tr[-1]:
@@ -383,27 +534,11 @@ def get_father(tr, st):
 
 
 def get_next_move(tree, st):
-    fa = st
-    while fa is not None:
-        tmp = fa
-        fa = get_father(tree, fa)
-        if fa is not None:
-            st = tmp
-            # print('Father_%s_' % st[0])
-    return st
-
-
-def decide_move(board, play):
-    states = expand_tree([board, 0, f_obj(board, play), []], depth_analysis, play)
-
-    # show_tree(states, play)
-    print('Total nodes in the tree: %d' % count_nodes(states))
-
-    choice, value = minimax_alpha_beta(states, depth_analysis, play, True, -math.inf, math.inf)
-
-    next_move = get_next_move(states, choice)
-
-    return next_move[0]
+    old = None
+    while get_father(tree, st) is not None:
+        old = st
+        st = get_father(tree, st)
+    return old
 
 
 def minimax_alpha_beta(tr, d, play, max_player, alpha, beta):
@@ -430,10 +565,33 @@ def minimax_alpha_beta(tr, d, play, max_player, alpha, beta):
     return ret_nd, ret
 
 
+def decide_move(board, play, nick):
+    states = expand_tree([board, random.random(), 0, f_obj(board, play), []], 0, depth_analysis,
+                         play)  # [board, hash, depth, g(), f_obj(), [SUNS]]
+
+    # show_tree(states, play, nick, 0)
+    print('Total nodes in the tree: %d' % count_nodes(states))
+
+    choice, value = minimax_alpha_beta(states, depth_analysis, play, True, -math.inf, math.inf)
+
+    # print('Choose f()=%f' % value)
+    # print('State_%s_' % choice[0])
+
+    next_move = get_next_move(states, choice)
+
+    # print('Next_%s_' % next_move[0])
+    # input('Trash')
+
+    return next_move[0]
+
+
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # socket initialization
 client.connect((sys.argv[1], int(sys.argv[2])))  # connecting client to server
 
-client.send(sys.argv[3].encode('ascii'))
+hello_msg = '%s_%s' % (sys.argv[4], sys.argv[3])
+client.send(hello_msg.encode('ascii'))
+
+nickname = sys.argv[3]
 
 player = int(sys.argv[4])
 
@@ -459,6 +617,6 @@ while True:  # making valid connection
             message[p_to] = aux
             message = ''.join(message)
     else:
-        message = decide_move(message, player)
+        message = decide_move(message, player, nickname)
 
     client.send(message.encode('ascii'))

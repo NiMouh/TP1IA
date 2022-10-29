@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="sei la">
+    <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="teste">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client_a_bit_smart.py" beforeDir="false" afterPath="$PROJECT_DIR$/client_a_bit_smart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_random_moves.py" beforeDir="false" afterPath="$PROJECT_DIR$/client_random_moves.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +75,7 @@
       <workItem from="1666555036333" duration="357000" />
       <workItem from="1666724283773" duration="110000" />
       <workItem from="1666817400208" duration="4274000" />
-      <workItem from="1667037576074" duration="658000" />
+      <workItem from="1667037576074" duration="1827000" />
     </task>
     <task id="LOCAL-00001" summary="eeee">
       <created>1666555224087</created>
@@ -97,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666703039282</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="teste">
+      <created>1667038343766</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1667038343766</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,6 +126,7 @@
     <MESSAGE value="eeee" />
     <MESSAGE value="r" />
     <MESSAGE value="sei la" />
-    <option name="LAST_COMMIT_MESSAGE" value="sei la" />
+    <MESSAGE value="teste" />
+    <option name="LAST_COMMIT_MESSAGE" value="teste" />
   </component>
 </project>
