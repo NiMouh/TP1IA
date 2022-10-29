@@ -3,9 +3,9 @@ import os, sys
 import time
 from datetime import datetime
 
-time_out = 15.0
+time_out = 1500.0
 
-moves_without_eat_to_draw = 10
+moves_without_eat_to_draw = 100
 
 
 def pos1_to_pos2(x):
@@ -116,23 +116,23 @@ def get_positions_directions(state, piece, p2, directions):
                     ret.append([p2[0] - r, p2[1]])
                 continue
             if d[0] == 'PS2':
-                if p2[0] + r <= 7 or p2[1] + 1 <= 7:
+                if p2[0] + r <= 7 and p2[1] + 1 <= 7:
                     if state[pos2_to_pos1([p2[0] + r, p2[1] + 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] + r, p2[1] + 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] + r, p2[1] + 1])
 
-                if p2[0] + r <= 7 or p2[1] - 1 >= 0:
+                if p2[0] + r <= 7 and p2[1] - 1 >= 0:
                     if state[pos2_to_pos1([p2[0] + r, p2[1] - 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] + r, p2[1] - 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] + r, p2[1] - 1])
                 continue
             if d[0] == 'PN2':
-                if p2[0] - r >= 0 or p2[1] + 1 <= 7:
+                if p2[0] - r >= 0 and p2[1] + 1 <= 7:
                     if state[pos2_to_pos1([p2[0] - r, p2[1] + 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] - r, p2[1] + 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] - r, p2[1] + 1])
 
-                if p2[0] - r >= 0 or p2[1] - 1 >= 0:
+                if p2[0] - r >= 0 and p2[1] - 1 >= 0:
                     if state[pos2_to_pos1([p2[0] - r, p2[1] - 1])] != 'z':
                         if abs(ord(state[pos2_to_pos1([p2[0] - r, p2[1] - 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] - r, p2[1] - 1])
@@ -483,8 +483,20 @@ nick_0 = client_0.recv(1024).decode('ascii')
 client_1, address_1 = server.accept()
 nick_1 = client_1.recv(1024).decode('ascii')
 
-nicks = [nick_0, nick_1]
-clients = [client_0, client_1]
+aux = nick_0.find('_')
+pla_0 = int(nick_0[:aux])
+nick_0 = nick_0[aux + 1:]
+
+aux = nick_1.find('_')
+pla_1 = int(nick_1[:aux])
+nick_1 = nick_1[aux + 1:]
+
+if pla_0 < pla_1:
+    nicks = [nick_0, nick_1]
+    clients = [client_0, client_1]
+else:
+    nicks = [nick_1, nick_0]
+    clients = [client_1, client_0]
 
 cur_state = 'abcdefghijklmnopzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzIJKMNLOPABCDEFGH'
 
@@ -515,10 +527,12 @@ while True:
         if not valid_mv:
             file_out.write('%s\n' % description_move(prev_state, cur_state, idx_move, nicks[idx_move % 2]))
             print('%s' % description_move(prev_state, cur_state, idx_move, nicks[idx_move % 2]))
-            print('Invalid move by %d - %s. Player %d - %s wins. Game finished. ' % (
-            idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)]))
-            file_out.write('Invalid move by %d - %s. Player %d - %s wins. Game finished. ' % (
-            idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)]))
+            print('Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
+            idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+            colors[1 - (idx_move % 2)]))
+            file_out.write('Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
+            idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+            colors[1 - (idx_move % 2)]))
             break
         # print('printing board...')
         board = print_board(prev_state, cur_state, idx_move, nicks[idx_move % 2])
@@ -530,8 +544,8 @@ while True:
         # print('Evaluated finish %d' % finish)
 
         if finish < 2:
-            print('Player %d - %s: %s wins. Game finished. ' % (finish, nicks[finish], colors[finish]))
-            file_out.write('Player %d - %s: %s wins. Game finished. ' % (finish, nicks[finish], colors[finish]))
+            print('Player %d - %s (%s) wins. Game finished. ' % (finish, nicks[finish], colors[finish]))
+            file_out.write('Player %d - %s (%s) wins. Game finished. ' % (finish, nicks[finish], colors[finish]))
             break
 
         eat = pieces_eaten(prev_state, cur_state)
@@ -550,10 +564,10 @@ while True:
         time.sleep(0.1)
         # print('Done...')
     except:
-        print('Timeout by %d - %s: %s. Player %d - %s: %s wins. Game finished. ' % (
+        print('Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
         idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
         colors[1 - (idx_move % 2)]))
-        file_out.write('Timeout by %d - %s: %s. Player %d - %s: %s wins. Game finished. ' % (
+        file_out.write('Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
         idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
         colors[1 - (idx_move % 2)]))
         break

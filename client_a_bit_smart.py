@@ -63,6 +63,14 @@ def f_obj(board, play):
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
     return (score_w + score_w_positions - score_b - score_b_positions) * pow(-1, play)
 
+# Priorizar movimentos onde o cavalo está no centro do tabuleiro
+# Priorizar movimentos onde o cavalo não fica nas bordas do tabuleiro
+# Priorizar movimentos onde os peões do centro são preservados
+# Priorizar movimentos onde o rei fica mais protegido
+# Priorizar movimentos onde as peças á frente do rei estão protegidas por mais alguma peça
+# Fazer verificação se alguma peça está prestes a comer o rei,
+# e colocar peças á frente do rei para proteger ou mexer o rei
+
 
 def find_node(tr, id):
     if len(tr) == 0:
