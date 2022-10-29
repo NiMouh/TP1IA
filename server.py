@@ -1,11 +1,12 @@
-import socket, threading
-import os, sys
+import os
+import socket
+import sys
 import time
 from datetime import datetime
 
 time_out = 1500.0
 
-moves_without_eat_to_draw = 100
+moves_without_eat_to_draw = 10
 
 
 def pos1_to_pos2(x):

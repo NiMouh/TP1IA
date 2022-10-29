@@ -1,10 +1,11 @@
-import socket, sys
 import math
 import random
+import socket
+import sys
 
 interactive_flag = False
 
-depth_analysis = 4
+depth_analysis = 3
 
 
 def pos2_to_pos1(x2):
