@@ -20,7 +20,7 @@ def pos1_to_pos2(x):
 
 # Função posição, recebe uma peça, a posição em que se encontra e se é branca ou preta
 # e retorna uma pontuação dado a posição dessa peça no tabuleiro "Piece-Square Table"
-def position(piece, pos, player):
+def position(piece, pos, play, endgame):
     # Declaração das tabelas de posição
     # Tabela de posição dos peões
     pawn_table = [0, 0, 0, 0, 0, 0, 0, 0,
@@ -90,7 +90,7 @@ def position(piece, pos, player):
     if piece == 'i' or piece == 'j' or piece == 'k' or piece == 'l' or piece == 'm' or piece == 'n' or piece == 'o' or piece == 'p' \
             or piece == 'I' or piece == 'J' or piece == 'K' or piece == 'L' or piece == 'M' or piece == 'N' or piece == 'O' or piece == 'P':
         # Se a peça for as brancas
-        if player:
+        if play:
             # Retorna a pontuação da tabela de posição do peão
             return pawn_table[pos]
         # Se a peça for preta
@@ -101,7 +101,7 @@ def position(piece, pos, player):
     # Se a peça for um cavalo (é o 'b' e o 'g')
     elif piece == 'b' or piece == 'g' or piece == 'B' or piece == 'G':
         # Se a peça for branca
-        if player:
+        if play:
             # Retorna a pontuação da tabela de posição do cavalo
             return knight_table[pos]
         # Se a peça for preta
@@ -112,7 +112,7 @@ def position(piece, pos, player):
     # Se a peça for um bispo (é o 'c' e o 'f')
     elif piece == 'c' or piece == 'f' or piece == 'C' or piece == 'F':
         # Se a peça for branca
-        if player:
+        if play:
             # Retorna a pontuação da tabela de posição do bispo
             return bishop_table[pos]
         # Se a peça for preta
@@ -123,7 +123,7 @@ def position(piece, pos, player):
     # Se a peça for uma torre (é o 'a' e o 'h')
     elif piece == 'a' or piece == 'h' or piece == 'A' or piece == 'H':
         # Se a peça for branca
-        if player:
+        if play:
             # Retorna a pontuação da tabela de posição da torre
             return rook_table[pos]
         # Se a peça for preta
@@ -134,7 +134,7 @@ def position(piece, pos, player):
     # Se a peça for uma rainha (é o 'd')
     elif piece == 'd' or piece == 'D':
         # Se a peça for branca
-        if player:
+        if play:
             # Retorna a pontuação da tabela de posição da rainha
             return queen_table[pos]
         # Se a peça for preta
@@ -144,14 +144,25 @@ def position(piece, pos, player):
 
     # Se a peça for um rei (é o 'e')
     elif piece == 'e' or piece == 'E':
-        # Se a peça for branca
-        if player:
-            # Retorna a pontuação da tabela de posição do rei
-            return king_table[pos]
-        # Se a peça for preta
+        # Caso seja o fim de jogo
+        if endgame:
+            # Se a peça for branca
+            if play:
+                # Retorna a pontuação da tabela de posição do rei no fim de jogo
+                return king_end_table[pos]
+            # Se a peça for preta
+            else:
+                # Retorna a pontuação da tabela de posição do rei no fim de jogo invertida
+                return king_end_table[63 - pos]
         else:
-            # Retorna a pontuação da tabela de posição do rei invertida
-            return king_table[63 - pos]
+            # Se a peça for branca
+            if play:
+                # Retorna a pontuação da tabela de posição do rei
+                return king_table[pos]
+            # Se a peça for preta
+            else:
+                # Retorna a pontuação da tabela de posição do rei invertida
+                return king_table[63 - pos]
 
 
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
@@ -170,6 +181,17 @@ def f_obj(board, play):
     # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças brancas
     score_w_positions = 0
 
+
+    # Declaração de variavel que determina quantas peças existem no tabuleiro (letras no board que não são 'z')
+    n_pieces = 64 - board.count('z')
+
+    # Declaração da variavel que determina se o rei está em xeque
+    check = False
+
+    # Caso estejam peças no tabuleiro para se considerar um endgame
+    if n_pieces <= 12:
+        check = True
+
     for i, p in enumerate(w):
         # Procura se o tabuleiro a analisar contêm essa peça
         ex = board.find(p)
@@ -178,7 +200,7 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
-            score_w_positions += position(p, ex, 1) * weight_positions * (ex % 8)
+            score_w_positions += position(p, ex, 1, check) * weight_positions * (ex % 8)
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -192,7 +214,7 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
-            score_b_positions += position(p, ex, 0) * weight_positions * (7 - ex % 8)
+            score_b_positions += position(p, ex, 0, check) * weight_positions * (7 - ex % 8)
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
