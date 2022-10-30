@@ -15,6 +15,9 @@ def decide_move(state, play):
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # socket initialization
 client.connect((sys.argv[1], int(sys.argv[2])))  # connecting client to server
 
+hello_msg = '%s_%s' % (sys.argv[4], sys.argv[3])
+client.send(hello_msg.encode('ascii'))
+
 client.send(sys.argv[3].encode('ascii'))
 
 player = int(sys.argv[4])
