@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="tentativa de piece-square table 2.0">
+    <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="uh">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_10_2022_14_01_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_10_2022_14_01__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,10 +75,10 @@
       <workItem from="1666724283773" duration="110000" />
       <workItem from="1666817400208" duration="4274000" />
       <workItem from="1667037576074" duration="2446000" />
-      <workItem from="1667047737946" duration="15429000" />
-      <workItem from="1667072332672" duration="8054000" />
-      <workItem from="1667083255340" duration="757000" />
-      <workItem from="1667143121699" duration="6696000" />
+      <workItem from="1667047737946" duration="15403000" />
+      <workItem from="1667385399254" duration="94000" />
+      <workItem from="1667646878412" duration="2287000" />
+      <workItem from="1667669732832" duration="747000" />
     </task>
     <task id="LOCAL-00001" summary="eeee">
       <created>1666555224087</created>
@@ -116,28 +115,7 @@
       <option name="project" value="LOCAL" />
       <updated>1667039423400</updated>
     </task>
-    <task id="LOCAL-00006" summary="nada de jeito">
-      <created>1667069496453</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1667069496453</updated>
-    </task>
-    <task id="LOCAL-00007" summary="tentativa de piece-square table">
-      <created>1667077522169</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1667077522169</updated>
-    </task>
-    <task id="LOCAL-00008" summary="tentativa de piece-square table 2.0">
-      <created>1667080404738</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1667080404738</updated>
-    </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,9 +138,6 @@
     <MESSAGE value="sei la" />
     <MESSAGE value="teste" />
     <MESSAGE value="fixes do prof" />
-    <MESSAGE value="nada de jeito" />
-    <MESSAGE value="tentativa de piece-square table" />
-    <MESSAGE value="tentativa de piece-square table 2.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="tentativa de piece-square table 2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes do prof" />
   </component>
 </project>
