@@ -145,13 +145,15 @@ def get_positions_directions(state, piece, p2, directions):
                     break
                 if state[pos2_to_pos1([p2[0] + r, p2[1]])] == 'z':
                     ret.append([p2[0] + r, p2[1]])
-                continue
+                    continue
+                break
             if d[0] == 'PN':
                 if p2[0] - r < 0:
                     break
                 if state[pos2_to_pos1([p2[0] - r, p2[1]])] == 'z':
                     ret.append([p2[0] - r, p2[1]])
-                continue
+                    continue
+                break
             if d[0] == 'PS2':
                 if p2[0] + r <= 7 and p2[1] + 1 <= 7:
                     if state[pos2_to_pos1([p2[0] + r, p2[1] + 1])] != 'z':
@@ -174,7 +176,6 @@ def get_positions_directions(state, piece, p2, directions):
                         if abs(ord(state[pos2_to_pos1([p2[0] - r, p2[1] - 1])]) - ord(piece)) > 16:
                             ret.append([p2[0] - r, p2[1] - 1])
                 continue
-
             if d[0] == 'H':
                 if p2[0] - 2 >= 0 and p2[1] - 1 >= 0:
                     if state[pos2_to_pos1([p2[0] - 2, p2[1] - 1])] == 'z' or abs(

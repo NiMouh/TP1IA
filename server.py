@@ -4,10 +4,8 @@ import sys
 import time
 from datetime import datetime
 
-# Limite de tempo por jogada
 time_out = 15
 
-# Limite de movimentos a fazer sem comer ninguém (empate)
 moves_without_eat_to_draw = 10
 
 
@@ -111,13 +109,15 @@ def get_positions_directions(state, piece, p2, directions):
                     break
                 if state[pos2_to_pos1([p2[0] + r, p2[1]])] == 'z':
                     ret.append([p2[0] + r, p2[1]])
-                continue
+                    continue
+                break
             if d[0] == 'PN':
                 if p2[0] - r < 0:
                     break
                 if state[pos2_to_pos1([p2[0] - r, p2[1]])] == 'z':
                     ret.append([p2[0] - r, p2[1]])
-                continue
+                    continue
+                break
             if d[0] == 'PS2':
                 if p2[0] + r <= 7 and p2[1] + 1 <= 7:
                     if state[pos2_to_pos1([p2[0] + r, p2[1] + 1])] != 'z':
@@ -531,11 +531,11 @@ while True:
             file_out.write('%s\n' % description_move(prev_state, cur_state, idx_move, nicks[idx_move % 2]))
             print('%s' % description_move(prev_state, cur_state, idx_move, nicks[idx_move % 2]))
             print('Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
-            idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-            colors[1 - (idx_move % 2)]))
+                idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+                colors[1 - (idx_move % 2)]))
             file_out.write('Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
-            idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-            colors[1 - (idx_move % 2)]))
+                idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+                colors[1 - (idx_move % 2)]))
             break
         # print('printing board...')
         board = print_board(prev_state, cur_state, idx_move, nicks[idx_move % 2])
@@ -558,9 +558,9 @@ while True:
             moves_without_eat = 0
         if moves_without_eat >= moves_without_eat_to_draw:
             print('%d consecutives without eaten pieces. %s - %s Draw. Game finished. ' % (
-            moves_without_eat, nicks[0], nicks[1]))
+                moves_without_eat, nicks[0], nicks[1]))
             file_out.write('%d consecutives without eaten pieces. %s - %s Draw. Game finished. ' % (
-            moves_without_eat, nicks[0], nicks[1]))
+                moves_without_eat, nicks[0], nicks[1]))
             break
 
         idx_move += 1
@@ -568,11 +568,11 @@ while True:
         # print('Done...')
     except:
         print('Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
-        idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-        colors[1 - (idx_move % 2)]))
+            idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+            colors[1 - (idx_move % 2)]))
         file_out.write('Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
-        idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-        colors[1 - (idx_move % 2)]))
+            idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+            colors[1 - (idx_move % 2)]))
         break
 
 file_out.close()
