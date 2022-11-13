@@ -8,10 +8,7 @@ interactive_flag = False
 depth_analysis = 3
 
 # Declaração da valoração de cada uma das peças
-pts = [100, 70, 60, 1000, 9999, 60, 70, 100, 10, 10, 10, 10, 10, 10, 10, 10]
-
-# Declara uma variavel global que define o end_game
-end_game_material = 1 * pts[0] + 1 * pts[1] + 2 * pts[2] + 1 * pts[3] + 1 * pts[4]
+pts = [50, 30, 30, 90, 900, 30, 30, 50, 10, 10, 10, 10, 10, 10, 10, 10]
 
 
 def pos2_to_pos1(x2):
@@ -25,369 +22,175 @@ def pos1_to_pos2(x):
 
 
 # Função posição começo do jogo, recebe uma peça a posição e o jogador
-def position_start(piece, pos, play):
+def position(piece, pos, play):
     # Declaração das tabelas de posição (priorizar jogo centralizado e peças avançadas)
-    # Tabela de posição dos peões para o início do jogo
-    pawn_table = [0, 0, 0, 0, 0, 0, 0, 0,
-                  50, 50, 50, 50, 50, 50, 50, 50,
-                  10, 10, 20, 30, 30, 20, 10, 10,
-                  5, 5, 15, 25, 25, 15, 5, 5,
-                  0, 0, 0, 40, 40, 0, 0, 0,
-                  5, -5, -10, 0, 0, -10, -5, 5,
-                  5, 10, 10, -20, -20, 10, 10, 5,
-                  0, 0, 0, 0, 0, 0, 0, 0]
-    # Tabela de posição dos cavalos
-    knight_table = [-50, -40, -30, -30, -30, -30, -40, -50,
-                    -40, -20, 0, 0, 0, 0, -20, -40,
-                    -30, 0, 10, 15, 15, 10, 0, -30,
-                    -30, 5, 15, 20, 20, 15, 5, -30,
-                    -30, 0, 15, 20, 20, 15, 0, -30,
-                    -30, 5, 10, 15, 15, 10, 5, -30,
-                    -40, -20, 0, 5, 5, 0, -20, -40,
-                    -50, -40, -30, -30, -30, -30, -40, -50]
-    # Tabela de posição dos bispos
-    bishop_table = [-20, -10, -10, -10, -10, -10, -10, -20,
-                    -10, 0, 0, 0, 0, 0, 0, -10,
-                    -10, 0, 5, 10, 10, 5, 0, -10,
-                    -10, 5, 5, 10, 10, 5, 5, -10,
-                    -10, 0, 10, 10, 10, 10, 0, -10,
-                    -10, 10, 10, 10, 10, 10, 10, -10,
-                    -10, 5, 0, 0, 0, 0, 5, -10,
-                    -20, -10, -10, -10, -10, -10, -10, -20]
-    # Tabela de posição das torres
-    rook_table = [0, 0, 0, 0, 0, 0, 0, 0,
-                  5, 10, 10, 10, 10, 10, 10, 5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  0, 0, 0, 5, 5, 0, 0, 0]
-    # Tabela de posição da rainha
-    queen_table = [-20, -10, -10, -5, -5, -10, -10, -20,
-                   -10, 0, 0, 0, 0, 0, 0, -10,
-                   -10, 0, 5, 5, 5, 5, 0, -10,
-                   -5, 0, 5, 5, 5, 5, 0, -5,
-                   0, 0, 5, 5, 5, 5, 0, -5,
-                   -10, 5, 5, 5, 5, 5, 0, -10,
-                   -10, 0, 5, 0, 0, 0, 0, -10,
-                   -20, -10, -10, -5, -5, -10, -10, -20]
-    # Tabela de posição do rei
-    king_table = [-30, -40, -40, -50, -50, -40, -40, -30,
-                  -30, -40, -40, -50, -50, -40, -40, -30,
-                  -30, -40, -40, -50, -50, -40, -40, -30,
-                  -30, -40, -40, -50, -50, -40, -40, -30,
-                  -20, -30, -30, -40, -40, -30, -30, -20,
-                  -10, -20, -20, -20, -20, -20, -20, -10,
-                  20, 20, 0, 0, 0, 0, 20, 20,
-                  20, 30, 10, 0, 0, 10, 30, 20]
+    # Tabela de posições da rainha
+    queen_table = [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0,
+                   -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0,
+                   -1.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -1.0,
+                   -0.5, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -0.5,
+                   0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -0.5,
+                   -1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.0, -1.0,
+                   -1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, -1.0,
+                   -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+
+    king_table = [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+                  -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+                  -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+                  -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+                  -2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0,
+                  -1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0,
+                  2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0,
+                  2.0, 3.0, 1.0, 0.0, 0.0, 1.0, 3.0, 2.0]
+
+    # Tabela de posições do cavalo para o início do jogo
+    knight_table = [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0,
+                    -4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0,
+                    -3.0, 0.0, 1.0, 1.5, 1.5, 1.0, 0.0, -3.0,
+                    -3.0, 0.5, 1.5, 1.5, 1.5, 1.5, 0.5, -3.0,
+                    -3.0, 0.0, 1.5, 1.5, 1.5, 1.5, 0.0, -3.0,
+                    -3.0, 0.5, 1.0, 1.5, 1.5, 1.0, 0.5, -3.0,
+                    -4.0, -2.0, 0.0, 0.5, 0.5, 0.0, -2.0, -4.0,
+                    -5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+
+    # Tabela de posições do bispo
+    bishop_table = [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0,
+                    -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0,
+                    -1.0, 0.0, 0.5, 1.0, 1.0, 0.5, 0.0, -1.0,
+                    -1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, -1.0,
+                    -1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, -1.0,
+                    -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0,
+                    -1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, -1.0,
+                    -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+
+    # Tabela de posições da torre
+    rook_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5,
+                  -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5,
+                  -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5,
+                  -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5,
+                  -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5,
+                  -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5,
+                  0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0]
+
+    # Tabela de posições do peão
+    pawn_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0,
+                  1.0, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.0,
+                  0.5, 0.5, 1.0, 2.5, 2.5, 1.0, 0.5, 0.5,
+                  0.0, 0.0, 0.0, 2.0, 2.0, 0.0, 0.0, 0.0,
+                  0.5, -0.5, -1.0, 0.0, 0.0, -1.0, -0.5, 0.5,
+                  0.5, 1.0, 1.0, -2.0, -2.0, 1.0, 1.0, 0.5,
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
     # Se a peça for um peão (está entre i e p)
     if piece == 'i' or piece == 'I' or piece == 'j' or piece == 'J' or piece == 'k' or piece == 'K' or piece == 'l' or piece == 'L' or piece == 'm' or piece == 'M' or piece == 'n' or piece == 'N' or piece == 'o' or piece == 'O' or piece == 'p' or piece == 'P':
-        # Se a peça for branca
+        # Se a peça for preta
         if play:
             # Retorna a pontuação da tabela de posição do peão
             return pawn_table[pos]
-        # Se a peça for preta
+        # Se a peça for branca
         else:
             # Retorna a pontuação da tabela de posição do peão invertida
             return pawn_table[63 - pos]
     # Se a peça for um cavalo ('a' e 'h')
     elif piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
-        # Se a peça for branca
+        # Se a peça for preta
         if play:
             # Retorna a pontuação da tabela de posição do cavalo
             return knight_table[pos]
-        # Se a peça for preta
+        # Se a peça for branca
         else:
             # Retorna a pontuação da tabela de posição do cavalo invertida
             return knight_table[63 - pos]
     # Se a peça for um bispo ('b' e 'g')
     elif piece == 'b' or piece == 'B' or piece == 'g' or piece == 'G':
-        # Se a peça for branca
+        # Se a peça for preta
         if play:
             # Retorna a pontuação da tabela de posição do bispo
             return bishop_table[pos]
-        # Se a peça for preta
+        # Se a peça for branca
         else:
             # Retorna a pontuação da tabela de posição do bispo invertida
             return bishop_table[63 - pos]
     # Se a peça for uma torre ('c' e 'f')
     elif piece == 'c' or piece == 'C' or piece == 'f' or piece == 'F':
-        # Se a peça for branca
+        # Se a peça for preta
         if play:
             # Retorna a pontuação da tabela de posição da torre
             return rook_table[pos]
-        # Se a peça for preta
+        # Se a peça for branca
         else:
             # Retorna a pontuação da tabela de posição da torre invertida
             return rook_table[63 - pos]
     # Se a peça for uma rainha ('d')
     elif piece == 'd' or piece == 'D':
-        # Se a peça for branca
+        # Se a peça for preta
         if play:
             # Retorna a pontuação da tabela de posição da rainha
             return queen_table[pos]
-        # Se a peça for preta
+        # Se a peça for branca
         else:
             # Retorna a pontuação da tabela de posição da rainha invertida
             return queen_table[63 - pos]
     # Se a peça for um rei ('e')
     elif piece == 'e' or piece == 'E':
-        # Se a peça for branca
+        # Se a peça for preta
         if play:
             # Retorna a pontuação da tabela de posição do rei
             return king_table[pos]
-        # Se a peça for preta
+        # Se a peça for branca
         else:
             # Retorna a pontuação da tabela de posição do rei invertida
             return king_table[63 - pos]
 
 
-# Função posição meio do jogo, recebe uma peça e a posição da mesma e o jogador
-def position_mid(piece, pos, play):
-    # Declaração das tabelas de posição do meio do jogo (priorizar o centro do tabuleiro e defender as peças)
-    # Tabela de posição dos peões a meio do jogo
-    pawn_table = [0, 0, 0, 0, 0, 0, 0, 0,
-                  50, 50, 50, 50, 50, 50, 50, 50,
-                  10, 10, 20, 30, 30, 20, 10, 10,
-                  5, 5, 15, 25, 25, 15, 5, 5,
-                  0, 0, 0, 30, 30, 0, 0, 0,
-                  5, -5, -10, 0, 0, -10, -5, 5,
-                  5, 10, 10, -20, -20, 10, 10, 5,
-                  0, 0, 0, 0, 0, 0, 0, 0]
-    # Tabela de posição dos cavalos
-    knight_table = [-50, -40, -30, -30, -30, -30, -40, -50,
-                    -40, -20, 0, 0, 0, 0, -20, -40,
-                    -30, 0, 10, 15, 15, 10, 0, -30,
-                    -30, 5, 15, 20, 20, 15, 5, -30,
-                    -30, 0, 15, 20, 20, 15, 0, -30,
-                    -30, 5, 10, 15, 15, 10, 5, -30,
-                    -40, -20, 0, 5, 5, 0, -20, -40,
-                    -50, -40, -30, -30, -30, -30, -40, -50]
-    # Tabela de posição dos bispos
-    bishop_table = [-20, -10, -10, -10, -10, -10, -10, -20,
-                    -10, 0, 0, 0, 0, 0, 0, -10,
-                    -10, 0, 5, 10, 10, 5, 0, -10,
-                    -10, 5, 5, 10, 10, 5, 5, -10,
-                    -10, 0, 10, 10, 10, 10, 0, -10,
-                    -10, 10, 10, 10, 10, 10, 10, -10,
-                    -10, 5, 0, 0, 0, 0, 5, -10,
-                    -20, -10, -10, -10, -10, -10, -10, -20]
-    # Tabela de posição das torres
-    rook_table = [0, 0, 0, 0, 0, 0, 0, 0,
-                  5, 10, 10, 10, 10, 10, 10, 5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  -5, 0, 0, 0, 0, 0, 0, -5,
-                  0, 0, 0, 5, 5, 0, 0, 0]
-    # Tabela de posição da rainha
-    queen_table = [-20, -10, -10, -5, -5, -10, -10, -20,
-                   -10, 0, 0, 0, 0, 0, 0, -10,
-                   -10, 0, 5, 5, 5, 5, 0, -10,
-                   -5, 0, 5, 5, 5, 5, 0, -5,
-                   0, 0, 5, 5, 5, 5, 0, -5,
-                   -10, 5, 5, 5, 5, 5, 0, -10,
-                   -10, 0, 5, 0, 0, 0, 0, -10,
-                   -20, -10, -10, -5, -5, -10, -10, -20]
-    # Tabela de posição do rei
-    king_table = [-30, -40, -40, -50, -50, -40, -40, -30,
-                  -30, -40, -40, -50, -50, -40, -40, -30,
-                  -30, -40, -40, -50, -50, -40, -40, -30,
-                  -30, -40, -40, -50, -50, -40, -40, -30,
-                  -20, -30, -30, -40, -40, -30, -30, -20,
-                  -10, -20, -20, -20, -20, -20, -20, -10,
-                  20, 20, 0, 0, 0, 0, 20, 20,
-                  20, 30, 10, 0, 0, 10, 30, 20]
-    # Se a peça for um peão (está entre i e p)
-    if piece == 'i' or piece == 'I' or piece == 'j' or piece == 'J' or piece == 'k' or piece == 'K' or piece == 'l' or piece == 'L' or piece == 'm' or piece == 'M' or piece == 'n' or piece == 'N' or piece == 'o' or piece == 'O' or piece == 'p' or piece == 'P':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do peão
-            return pawn_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do peão invertida
-            return pawn_table[63 - pos]
-    # Se a peça for um cavalo ('a' e 'h')
-    elif piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do cavalo
-            return knight_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do cavalo invertida
-            return knight_table[63 - pos]
-    # Se a peça for um bispo ('b' e 'g')
-    elif piece == 'b' or piece == 'B' or piece == 'g' or piece == 'G':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do bispo
-            return bishop_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do bispo invertida
-            return bishop_table[63 - pos]
-    # Se a peça for uma torre ('c' e 'f')
-    elif piece == 'c' or piece == 'C' or piece == 'f' or piece == 'F':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição da torre
-            return rook_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição da torre invertida
-            return rook_table[63 - pos]
-    # Se a peça for uma rainha ('d')
-    elif piece == 'd' or piece == 'D':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição da rainha
-            return queen_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição da rainha invertida
-            return queen_table[63 - pos]
-    # Se a peça for um rei ('e')
-    elif piece == 'e' or piece == 'E':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do rei
-            return king_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do rei invertida
-            return king_table[63 - pos]
+# Função controlo, recebe o tabuleiro, e o jogador que joga
+# devolve uma pontuação de qual setor do tabuleiro a serem dominados
+def control(board, play):
+    # Declaração da variável dos setores do tabuleiro (tamanho 64)
+    sectors = [11, 11, 11, 7, 7, 9, 9, 9,
+               11, 11, 11, 7, 7, 9, 9, 9,
+               10, 10, 10, 7, 7, 8, 8, 8,
+               10, 10, 10, 6, 6, 8, 8, 8,
+               2, 2, 26, 6, 6, 4, 4, 4,
+               2, 2, 2, 5, 5, 4, 4, 4,
+               1, 1, 1, 5, 5, 3, 3, 3,
+               1, 1, 1, 5, 5, 3, 3, 3]
 
+    # Declaração da variável de pontuação (inicializada a 0)
+    score = 0
 
-# Função posição fim do jogo, recebe uma peça e a posição da mesma e o jogador
-def position_end(piece, pos, play):
-    # Declaração das tabelas de posição do meio do jogo (priorizar defesa do rei e capturas)
-    # Tabela de posição do peão no fim de jogo
-    pawn_end_table = [0, 0, 0, 0, 0, 0, 0, 0,
-                      5, 10, 10, -20, -20, 10, 10, 5,
-                      5, -5, -10, 0, 0, -10, -5, 5,
-                      0, 0, 0, 20, 20, 0, 0, 0,
-                      5, 5, 10, 25, 25, 10, 5, 5,
-                      10, 10, 20, 30, 30, 20, 10, 10,
-                      50, 50, 50, 50, 50, 50, 50, 50,
-                      0, 0, 0, 0, 0, 0, 0, 0]
-    # Tabela de posição do cavalo no fim de jogo
-    knight_end_table = [-50, -40, -30, -30, -30, -30, -40, -50,
-                        -40, -20, 0, 0, 0, 0, -20, -40,
-                        -30, 0, 10, 15, 15, 10, 0, -30,
-                        -30, 5, 15, 20, 20, 15, 5, -30,
-                        -30, 0, 15, 20, 20, 15, 0, -30,
-                        -30, 5, 10, 15, 15, 10, 5, -30,
-                        -40, -20, 0, 5, 5, 0, -20, -40,
-                        -50, -40, -30, -30, -30, -30, -40, -50]
-    # Tabela de posição do bispo no fim de jogo
-    bishop_end_table = [-20, -10, -10, -10, -10, -10, -10, -20,
-                        -10, 0, 0, 0, 0, 0, 0, -10,
-                        -10, 0, 5, 10, 10, 5, 0, -10,
-                        -10, 5, 5, 10, 10, 5, 5, -10,
-                        -10, 0, 10, 10, 10, 10, 0, -10,
-                        -10, 10, 10, 10, 10, 10, 10, -10,
-                        -10, 5, 0, 0, 0, 0, 5, -10,
-                        -20, -10, -10, -10, -10, -10, -10, -20]
-    # Tabela de posição da torre no fim de jogo
-    rook_end_table = [0, 0, 0, 0, 0, 0, 0, 0,
-                      5, 10, 10, 10, 10, 10, 10, 5,
-                      -5, 0, 0, 0, 0, 0, 0, -5,
-                      -5, 0, 0, 0, 0, 0, 0, -5,
-                      -5, 0, 0, 0, 0, 0, 0, -5,
-                      -5, 0, 0, 0, 0, 0, 0, -5,
-                      -5, 0, 0, 0, 0, 0, 0, -5,
-                      0, 0, 0, 5, 5, 0, 0, 0]
-    # Tabela de posição da rainha no fim de jogo
-    queen_end_table = [-20, -10, -10, -5, -5, -10, -10, -20,
-                       -10, 0, 0, 0, 0, 0, 0, -10,
-                       -10, 0, 5, 5, 5, 5, 0, -10,
-                       -5, 0, 5, 5, 5, 5, 0, -5,
-                       0, 0, 5, 5, 5, 5, 0, -5,
-                       -10, 5, 5, 5, 5, 5, 0, -10,
-                       -10, 0, 5, 0, 0, 0, 0, -10,
-                       -20, -10, -10, -5, -5, -10, -10, -20]
-    # Se a peça for um peão (está entre i e p)
-    if piece == 'i' or piece == 'I' or piece == 'j' or piece == 'J' or piece == 'k' or piece == 'K' or piece == 'l' or piece == 'L' or piece == 'm' or piece == 'M' or piece == 'n' or piece == 'N' or piece == 'o' or piece == 'O' or piece == 'p' or piece == 'P':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do peão
-            return pawn_end_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do peão invertida
-            return pawn_end_table[63 - pos]
-    # Se a peça for um cavalo ('a' e 'h')
-    elif piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do cavalo
-            return knight_end_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do cavalo invertida
-            return knight_end_table[63 - pos]
-    # Se a peça for um bispo ('b' e 'g')
-    elif piece == 'b' or piece == 'B' or piece == 'g' or piece == 'G':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do bispo
-            return bishop_end_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do bispo invertida
-            return bishop_end_table[63 - pos]
-    # Se a peça for uma torre ('c' e 'f')
-    elif piece == 'c' or piece == 'C' or piece == 'f' or piece == 'F':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição da torre
-            return rook_end_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição da torre invertida
-            return rook_end_table[63 - pos]
-    # Se a peça for uma rainha ('d')
-    elif piece == 'd' or piece == 'D':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição da rainha
-            return queen_end_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição da rainha invertida
-            return queen_end_table[63 - pos]
-    # Se a peça for um rei ('e')
-    elif piece == 'e' or piece == 'E':
-        # Se a peça for branca
-        if play:
-            # Retorna a pontuação da tabela de posição do rei
-            return knight_end_table[pos]
-        # Se a peça for preta
-        else:
-            # Retorna a pontuação da tabela de posição do rei invertida
-            return knight_end_table[63 - pos]
+    # Declaração das peças brancas
+    w = 'abcdefghijlmnop'
+    # Declaração das peças pretas
+    b = 'ABCDEFGHIJLMNOP'
 
+    # Percorrendo o tabuleiro
+    for i in range(64):
+        # Caso a peça seja uma peça branca
+        if board[i] in w:
+            # Se o jogador for branco
+            if play:
+                # Adiciona a pontuação do setor do tabuleiro (invertido)
+                score += sectors[63 - i]
+            # Se o jogador for preto
+            else:
+                # Subtrai a pontuação do setor do tabuleiro (invertido)
+                score -= sectors[63 - i]
+        # Caso a peça seja uma peça preta
+        elif board[i] in b:
+            # Se o jogador for branco
+            if play:
+                # Subtrai a pontuação do setor do tabuleiro
+                score -= sectors[i]
+            # Se o jogador for preto
+            else:
+                # Adiciona a pontuação do setor do tabuleiro
+                score += sectors[i]
 
-# Função posição, recebe uma peça, a posição em que se encontra,
-# se é branca ou preta e se é o fim de jogo, meio de jogo ou início de jogo
-# e retorna uma pontuação conforme a posição da peça
-def position(piece, pos, play, game_phase):
-    # Se for o começo do jogo
-    if game_phase == 0:
-        # Retorna a pontuação da posição da peça
-        return position_start(piece, pos, play)
-    # Se for o meio do jogo
-    elif game_phase == 1:
-        # Retorna a pontuação da posição da peça
-        return position_mid(piece, pos, play)
-    # Se for o fim do jogo
-    elif game_phase == 2:
-        # Retorna a pontuação da posição da peça
-        return position_end(piece, pos, play)
+    # Retorna a pontuação
+    return score
 
 
 # Função sobre ameaça, recebe o tabuleiro e uma peça e retorna uma pontuação dado o quão ameaçada ela está
@@ -741,31 +544,16 @@ def threat(board, piece):
 def f_obj(board, play):
     # Declaração das peças brancas e pretas em modo ‘string’
     # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
-    w = 'abcdedghijklmnop'
+    w = 'abcdefghijklmnop'
     b = 'ABCDEFGHIJKLMNOP'
+
     # Declaração da valoração de cada uma das peças
     global pts
+
     # Declaração da variavel que representa a pontuação obtida pelas peças brancas
     score_w = 0
     # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças brancas
     score_w_positions = 0
-
-    # Se nenhuma peça for comida, em 10 jogadas, jogar agressivo
-    conta = 64 - board.count('z')
-
-    if conta == 64:
-        weight_positions = 1e-3
-    else:
-        # Caso contrário, jogar defensivo
-        weight_positions = 1e-1
-
-    # Caso estejamos no fim do jogo
-    if conta < 10:
-        game_phase = 2
-    elif conta < 20:
-        game_phase = 1
-    else:
-        game_phase = 0
 
     for i, p in enumerate(w):
         # Procura se o tabuleiro a analisar contêm essa peça
@@ -775,7 +563,7 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
-            score_w_positions += position(p, ex, 1, game_phase) * weight_positions * (ex % 8)
+            score_w_positions += position(p, ex, 0)
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -789,10 +577,11 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
-            score_b_positions += position(p, ex, 0, game_phase) * weight_positions * (7 - ex % 8)
+            score_b_positions += position(p, ex, 1)
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
+    # e se o jogador atual tem o melhor controlo do tabuleiro
     return (score_w + score_w_positions - score_b - score_b_positions) * pow(-1, play)
 
 
