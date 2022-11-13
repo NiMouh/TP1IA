@@ -22,7 +22,7 @@ def pos1_to_pos2(x):
 
 
 # Função posição começo do jogo, recebe uma peça a posição e o jogador
-def position(piece, pos, play):
+def position(piece, pos):
     # Declaração das tabelas de posição (priorizar jogo centralizado e peças avançadas)
     # Tabela de posições da rainha
     queen_table = [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0,
@@ -34,6 +34,7 @@ def position(piece, pos, play):
                    -1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, -1.0,
                    -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
 
+    # Tabela de posições do rei
     king_table = [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
                   -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
                   -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
@@ -83,114 +84,35 @@ def position(piece, pos, play):
                   0.5, 1.0, 1.0, -2.0, -2.0, 1.0, 1.0, 0.5,
                   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-    # Se a peça for um peão (está entre i e p)
-    if piece == 'i' or piece == 'I' or piece == 'j' or piece == 'J' or piece == 'k' or piece == 'K' or piece == 'l' or piece == 'L' or piece == 'm' or piece == 'M' or piece == 'n' or piece == 'N' or piece == 'o' or piece == 'O' or piece == 'p' or piece == 'P':
-        # Se a peça for preta
-        if play:
-            # Retorna a pontuação da tabela de posição do peão
-            return pawn_table[pos]
-        # Se a peça for branca
-        else:
-            # Retorna a pontuação da tabela de posição do peão invertida
-            return pawn_table[63 - pos]
     # Se a peça for um cavalo ('a' e 'h')
-    elif piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
-        # Se a peça for preta
-        if play:
-            # Retorna a pontuação da tabela de posição do cavalo
-            return knight_table[pos]
-        # Se a peça for branca
-        else:
-            # Retorna a pontuação da tabela de posição do cavalo invertida
-            return knight_table[63 - pos]
+    if piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
+        # Retorna a pontuação da tabela de posição do cavalo
+        return knight_table[pos]
+
     # Se a peça for um bispo ('b' e 'g')
     elif piece == 'b' or piece == 'B' or piece == 'g' or piece == 'G':
-        # Se a peça for preta
-        if play:
-            # Retorna a pontuação da tabela de posição do bispo
-            return bishop_table[pos]
-        # Se a peça for branca
-        else:
-            # Retorna a pontuação da tabela de posição do bispo invertida
-            return bishop_table[63 - pos]
+        # Retorna a pontuação da tabela de posição do bispo
+        return bishop_table[pos]
+
     # Se a peça for uma torre ('c' e 'f')
     elif piece == 'c' or piece == 'C' or piece == 'f' or piece == 'F':
-        # Se a peça for preta
-        if play:
-            # Retorna a pontuação da tabela de posição da torre
-            return rook_table[pos]
-        # Se a peça for branca
-        else:
-            # Retorna a pontuação da tabela de posição da torre invertida
-            return rook_table[63 - pos]
+        # Retorna a pontuação da tabela de posição da torre
+        return rook_table[pos]
+
     # Se a peça for uma rainha ('d')
     elif piece == 'd' or piece == 'D':
-        # Se a peça for preta
-        if play:
-            # Retorna a pontuação da tabela de posição da rainha
-            return queen_table[pos]
-        # Se a peça for branca
-        else:
-            # Retorna a pontuação da tabela de posição da rainha invertida
-            return queen_table[63 - pos]
+        # Retorna a pontuação da tabela de posição da rainha
+        return queen_table[pos]
+
     # Se a peça for um rei ('e')
     elif piece == 'e' or piece == 'E':
-        # Se a peça for preta
-        if play:
-            # Retorna a pontuação da tabela de posição do rei
-            return king_table[pos]
-        # Se a peça for branca
-        else:
-            # Retorna a pontuação da tabela de posição do rei invertida
-            return king_table[63 - pos]
+        # Retorna a pontuação da tabela de posição do rei
+        return king_table[pos]
 
-
-# Função controlo, recebe o tabuleiro, e o jogador que joga
-# devolve uma pontuação de qual setor do tabuleiro a serem dominados
-def control(board, play):
-    # Declaração da variável dos setores do tabuleiro (tamanho 64)
-    sectors = [11, 11, 11, 7, 7, 9, 9, 9,
-               11, 11, 11, 7, 7, 9, 9, 9,
-               10, 10, 10, 7, 7, 8, 8, 8,
-               10, 10, 10, 6, 6, 8, 8, 8,
-               2, 2, 26, 6, 6, 4, 4, 4,
-               2, 2, 2, 5, 5, 4, 4, 4,
-               1, 1, 1, 5, 5, 3, 3, 3,
-               1, 1, 1, 5, 5, 3, 3, 3]
-
-    # Declaração da variável de pontuação (inicializada a 0)
-    score = 0
-
-    # Declaração das peças brancas
-    w = 'abcdefghijlmnop'
-    # Declaração das peças pretas
-    b = 'ABCDEFGHIJLMNOP'
-
-    # Percorrendo o tabuleiro
-    for i in range(64):
-        # Caso a peça seja uma peça branca
-        if board[i] in w:
-            # Se o jogador for branco
-            if play:
-                # Adiciona a pontuação do setor do tabuleiro (invertido)
-                score += sectors[63 - i]
-            # Se o jogador for preto
-            else:
-                # Subtrai a pontuação do setor do tabuleiro (invertido)
-                score -= sectors[63 - i]
-        # Caso a peça seja uma peça preta
-        elif board[i] in b:
-            # Se o jogador for branco
-            if play:
-                # Subtrai a pontuação do setor do tabuleiro
-                score -= sectors[i]
-            # Se o jogador for preto
-            else:
-                # Adiciona a pontuação do setor do tabuleiro
-                score += sectors[i]
-
-    # Retorna a pontuação
-    return score
+    # Se a peça for um peão (está entre i e p)
+    else:
+        # Retorna a pontuação da tabela de posição do peão
+        return pawn_table[pos]
 
 
 # Função sobre ameaça, recebe o tabuleiro e uma peça e retorna uma pontuação dado o quão ameaçada ela está
@@ -563,7 +485,7 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
-            score_w_positions += position(p, ex, 0)
+            score_w_positions += position(p, ex)
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -577,7 +499,7 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
-            score_b_positions += position(p, ex, 1)
+            score_b_positions += position(p, ex)
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
@@ -781,7 +703,7 @@ def count_nodes(tr):
     if len(tr) > 0:
         for t in tr[-1]:
             ret += count_nodes(t)
-        return (1 + ret)
+        return 1 + ret
     return ret
 
 
@@ -993,38 +915,6 @@ def minimax_alpha_beta(tr, d, play, max_player, alpha, beta):
             break
 
     return ret_nd, ret
-
-
-# Function mini-max with alpha-beta pruning and Null Move Pruning.
-# it receives the tree, the depth, the player, the alpha, the beta and the null move
-# And returns the best node and the value of the node
-def minimax_alpha_beta_null_move(tr, d, play, max_player, alpha, beta, null_move):
-    if d == 0 or len(tr[-1]) == 0:
-        return tr, f_obj(tr[0], play)
-
-    ret = math.inf * pow(-1, max_player)
-    ret_nd = tr
-    for s in tr[-1]:
-        if null_move:
-            aux, val = minimax_alpha_beta_null_move(s, d - 1, play, not max_player, -beta, -beta + 1, False)
-            val = -val
-        else:
-            aux, val = minimax_alpha_beta_null_move(s, d - 1, play, not max_player, alpha, beta, True)
-        if max_player:
-            if val > ret:
-                ret = val
-                ret_nd = aux
-            alpha = max(alpha, ret)
-        else:
-            if val < ret:
-                ret = val
-                ret_nd = aux
-            beta = min(beta, ret)
-        if beta <= alpha:
-            break
-
-    return ret_nd, ret
-
 
 def decide_move(board, play, nick):
     states = expand_tree([board, random.random(), 0, f_obj(board, play), []], 0, depth_analysis,
