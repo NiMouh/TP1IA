@@ -117,347 +117,555 @@ def position(piece, pos):
 
 # Função sobre ameaça, recebe o tabuleiro e uma peça e retorna uma pontuação dado o quão ameaçada ela está
 def threat(board, piece):
+    # Declaração das peças brancas e pretas em modo ‘string’
+    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+    w = 'abcdefghijklmnop'
+    b = 'ABCDEFGHIJKLMNOP'
+
+    # Conjunto de peças que podem ameaçar a peça
     res = []
+    # Declaração da variável de posição da peça
     pos = board.find(piece)
+    # Declaração da variável de posição da peça (2D)
     pos2 = pos1_to_pos2(pos)
-    # Se for uma torre branca
-    if piece == 'a' or piece == 'h':
-        for i in range(1, pos2[0] + 8):  # Norte
-            if i < 8:
+    if piece == 'a' or piece == 'h':  # Torre branca
+        # Ciclo que percorre o tabuleiro horizontalmente
+        for i in range(1, 8):  # Norte
+            if pos2[0] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1]])]  # Peça ameaçada
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[0]):  # Sul
-            if i < 8:
+        for i in range(1, 8):  # Sul
+            if pos2[0] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1]])]  # Peça ameaçada
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, pos2[1] + 8):  # Oeste
-            if i < 8:
+        for i in range(1, 8):  # Leste
+            if pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] - i])]  # Peça ameaçada
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[1]):  # Leste
-            if i < 8:
+        for i in range(1, 8):  # Oeste
+            if pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] + i])]  # Peça ameaçada
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-    # Se for uma torre preta
-    elif piece == 'A' or piece == 'H':
-        for i in range(1, pos2[0] + 8):
-            if i < 8:
+    elif piece == 'b' or piece == 'g':  # Cavalo branco
+        # Ciclo que percorre o tabuleiro em L
+        for i in range(1, 3):  # Nordeste
+            if pos2[0] + i > 7 or pos2[1] + 3 - i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1]])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + 3 - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[0]):
-            if i < 8:
+        for i in range(1, 3):  # Sudeste
+            if pos2[0] - i < 0 or pos2[1] + 3 - i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1]])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + 3 - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, pos2[1] + 8):
-            if i < 8:
+        for i in range(1, 3):  # Sudoeste
+            if pos2[0] - i < 0 or pos2[1] - 3 + i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] - i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - 3 + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[1]):
-            if i < 8:
+        for i in range(1, 3):  # Noroeste
+            if pos2[0] + i > 7 or pos2[1] - 3 + i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] + i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - 3 + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-    # Se for um bispo branco
-    elif piece == 'c' or piece == 'f':
-        for i in range(1, min(pos2[0] + 8, pos2[1] + 8)):
-            if i < 8:
+    elif piece == 'c' or piece == 'f':  # Bispo branco
+        # Ciclo que percorre o tabuleiro diagonalmente
+        for i in range(1, 8):  # Nordeste
+            if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] - i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], pos2[1] + 8)):
-            if i < 8:
+        for i in range(1, 8):  # Sudeste
+            if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] - i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, min(pos2[0] + 8, 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 8):  # Sudoeste
+            if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] + i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 8):  # Noroeste
+            if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-    # Se for um bispo preto
-    elif piece == 'C' or piece == 'F':
-        for i in range(1, min(pos2[0] + 8, pos2[1] + 8)):
-            if i < 8:
+    elif piece == 'd':  # Rainha branca
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 8):  # Norte
+            if pos2[0] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] - i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], pos2[1] + 8)):
-            if i < 8:
+        for i in range(1, 8):  # Sul
+            if pos2[0] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] - i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, min(pos2[0] + 8, 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 8):  # Leste
+            if pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] + i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 8):  # Oeste
+            if pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
                 res.append(o)
                 break
-    # Se for um cavalo branco
-    elif piece == 'b' or piece == 'g':
-        for i in range(1, 3):
+        for i in range(1, 8):  # Nordeste
+            if pos2[0] + i > 7 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 8):  # Sudeste
+            if pos2[0] - i < 0 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 8):  # Sudoeste
+            if pos2[0] - i < 0 or pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 8):  # Noroeste
+            if pos2[0] + i > 7 or pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+    elif piece == 'e':  # Rei branco
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 2):  # Norte (1 casa)
+
+            if pos2[0] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Sul (1 casa)
+            if pos2[0] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Leste (1 casa)
+            if pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Oeste (1 casa)
+            if pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Nordeste (1 casa)
+            if pos2[0] + i > 7 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Sudeste (1 casa)
+            if pos2[0] - i < 0 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Sudoeste (1 casa)
+            if pos2[0] - i < 0 or pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Noroeste (1 casa)
+            if pos2[0] + i > 7 or pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
+                break
+            elif o in b:
+                res.append(o)
+                break
+    elif piece == 'A' or piece == 'H':  # Torre preta
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 8):  # Norte
+            if pos2[0] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+        for i in range(1, 8):  # Sul
+            if pos2[0] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+        for i in range(1, 8):  # Leste
+            if pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+        for i in range(1, 8):  # Oeste
+            if pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+    elif piece == 'B' or piece == 'G':  # Cavalo preto
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 3):  # Norte
+            if pos2[0] + i > 7:
+                break
             for j in range(1, 3):
-                if i != j:
-                    if 0 <= pos2[0] - i < 8 and 0 <= pos2[1] - j < 8:
-                        o = board[pos2_to_pos1([pos2[0] - i, pos2[1] - j])]
-                        # se 'o' estiver entre 'A' e 'Z'
-                        if 'A' <= o <= 'Z':
-                            res.append(o)
-                    if 0 <= pos2[0] - i < 8 and 0 <= pos2[1] + j < 8:
-                        o = board[pos2_to_pos1([pos2[0] - i, pos2[1] + j])]
-                        # se 'o' estiver entre 'A' e 'Z'
-                        if 'A' <= o <= 'Z':
-                            res.append(o)
-                    if 0 <= pos2[0] + i < 8 and 0 <= pos2[1] - j < 8:
-                        o = board[pos2_to_pos1([pos2[0] + i, pos2[1] - j])]
-                        # se 'o' estiver entre 'A' e 'Z'
-                        if 'A' <= o <= 'Z':
-                            res.append(o)
-                    if 0 <= pos2[0] + i < 8 and 0 <= pos2[1] + j < 8:
-                        o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + j])]
-                        # se 'o' estiver entre 'A' e 'Z'
-                        if 'A' <= o <= 'Z':
-                            res.append(o)
-    # Se for um cavalo preto
-    elif piece == 'B' or piece == 'G':
-        for i in range(1, 3):
+                if pos2[1] + j > 7:
+                    break
+                o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + j))]
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                    break
+                elif o in w:
+                    res.append(o)
+                    break
+        for i in range(1, 3):  # Sul
+            if pos2[0] - i < 0:
+                break
             for j in range(1, 3):
-                if i != j:
-                    if 0 <= pos2[0] - i < 8 and 0 <= pos2[1] - j < 8:
-                        o = board[pos2_to_pos1([pos2[0] - i, pos2[1] - j])]
-                        # se 'o' estiver entre 'a' e 'z'
-                        if 'a' <= o <= 'z':
-                            res.append(o)
-                    if 0 <= pos2[0] - i < 8 and 0 <= pos2[1] + j < 8:
-                        o = board[pos2_to_pos1([pos2[0] - i, pos2[1] + j])]
-                        # se 'o' estiver entre 'a' e 'z'
-                        if 'a' <= o <= 'z':
-                            res.append(o)
-                    if 0 <= pos2[0] + i < 8 and 0 <= pos2[1] - j < 8:
-                        o = board[pos2_to_pos1([pos2[0] + i, pos2[1] - j])]
-                        # se 'o' estiver entre 'a' e 'z'
-                        if 'a' <= o <= 'z':
-                            res.append(o)
-                    if 0 <= pos2[0] + i < 8 and 0 <= pos2[1] + j < 8:
-                        o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + j])]
-                        # se 'o' estiver entre 'a' e 'z'
-                        if 'a' <= o <= 'z':
-                            res.append(o)
-    # Se for um rei branco
-    elif piece == 'e':
-        for i in range(-1, 2):
-            for j in range(-1, 2):
-                if i != 0 or j != 0:
-                    if 0 <= pos2[0] + i < 8 and 0 <= pos2[1] + j < 8:
-                        o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + j])]
-                        # se 'o' estiver entre 'A' e 'Z'
-                        if 'A' <= o <= 'Z':
-                            res.append(o)
-    # Se for um rei preto
-    elif piece == 'E':
-        for i in range(-1, 2):
-            for j in range(-1, 2):
-                if i != 0 or j != 0:
-                    if 0 <= pos2[0] + i < 8 and 0 <= pos2[1] + j < 8:
-                        o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + j])]
-                        # se 'o' estiver entre 'a' e 'z'
-                        if 'a' <= o <= 'z':
-                            res.append(o)
-    # Se for uma rainha branca
-    elif piece == 'd':
-        for i in range(1, pos2[0] + 8):
-            if i < 8:
+                if pos2[1] - j < 0:
+                    break
+                o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - j))]
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                    break
+                elif o in w:
+                    res.append(o)
+                    break
+        for i in range(1, 3):  # Leste
+            if pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1]])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            for j in range(1, 3):
+                if pos2[0] - j < 0:
+                    break
+                o = board[pos2_to_pos1((pos2[0] - j, pos2[1] + i))]
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                    break
+                elif o in w:
+                    res.append(o)
+                    break
+        for i in range(1, 3):  # Oeste
+            if pos2[1] - i < 0:
+                break
+            for j in range(1, 3):
+                if pos2[0] + j > 7:
+                    break
+                o = board[pos2_to_pos1((pos2[0] + j, pos2[1] - i))]
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
+                    break
+                elif o in w:
+                    res.append(o)
+                    break
+    elif piece == 'C' or piece == 'F':  # Bispo preto
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 8):  # Nordeste
+            if pos2[0] + i > 7 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[0]):
-            if i < 8:
+        for i in range(1, 8):  # Sudeste
+            if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1]])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, pos2[1] + 8):
-            if i < 8:
+        for i in range(1, 8):  # Sudoeste
+            if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] - i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[1]):
-            if i < 8:
+        for i in range(1, 8):  # Noroeste
+            if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] + i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(pos2[0] + 8, pos2[1] + 8)):
-            if i < 8:
+    elif piece == 'D':  # Rainha preta
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 8):  # Norte
+            if pos2[0] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] - i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], pos2[1] + 8)):
-            if i < 8:
+        for i in range(1, 8):  # Sul
+            if pos2[0] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] - i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(pos2[0] + 8, 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 8):  # Leste
+            if pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] + i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 8):  # Oeste
+            if pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + i])]
-            # se 'o' estiver entre 'A' e 'Z'
-            if 'A' <= o <= 'Z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-    # Se for uma rainha preta
-    elif piece == 'D':
-        for i in range(1, pos2[0] + 8):
-            if i < 8:
+        for i in range(1, 8):  # Nordeste
+            if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1]])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[0]):
-            if i < 8:
+        for i in range(1, 8):  # Sudeste
+            if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1]])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, pos2[1] + 8):
-            if i < 8:
+        for i in range(1, 8):  # Sudoeste
+            if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] - i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, 8 - pos2[1]):
-            if i < 8:
+        for i in range(1, 8):  # Noroeste
+            if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0], pos2[1] + i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(pos2[0] + 8, pos2[1] + 8)):
-            if i < 8:
+    elif piece == 'E':  # Rei Preto
+        # Ciclo que percorre o tabuleiro em todas as direções
+        for i in range(1, 2):  # Norte
+            if pos2[0] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] - i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], pos2[1] + 8)):
-            if i < 8:
+        for i in range(1, 2):  # Sul
+            if pos2[0] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] - i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(pos2[0] + 8, 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 2):  # Leste
+            if pos2[1] + i > 7:
                 break
-            o = board[pos2_to_pos1([pos2[0] - i, pos2[1] + i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
-        for i in range(1, min(8 - pos2[0], 8 - pos2[1])):
-            if i < 8:
+        for i in range(1, 2):  # Oeste
+            if pos2[1] - i < 0:
                 break
-            o = board[pos2_to_pos1([pos2[0] + i, pos2[1] + i])]
-            # se 'o' estiver entre 'a' e 'z'
-            if 'a' <= o <= 'z':
+            o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
                 res.append(o)
                 break
+        for i in range(1, 2):  # Nordeste
+            if pos2[0] + i > 7 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Sudeste
+            if pos2[0] - i < 0 or pos2[1] + i > 7:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Sudoeste
+            if pos2[0] - i < 0 or pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+        for i in range(1, 2):  # Noroeste
+            if pos2[0] + i > 7 or pos2[1] - i < 0:
+                break
+            o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
+                break
+            elif o in w:
+                res.append(o)
+                break
+
     return res
 
 
@@ -476,6 +684,8 @@ def f_obj(board, play):
     score_w = 0
     # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças brancas
     score_w_positions = 0
+    # Declaração da variavel que representa a quantidades de peças brancas a ameaçar
+    score_w_threats = 0
 
     for i, p in enumerate(w):
         # Procura se o tabuleiro a analisar contêm essa peça
@@ -486,11 +696,27 @@ def f_obj(board, play):
             score_w += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
             score_w_positions += position(p, ex)
+            # Declaração de variavel que guarda as peças em ameaça
+            threats = threat(board, p)
+            # Caso esteja a ameaçar uma rainha ou um rei preto
+            if 'D' in threats or 'E' in threats:
+                # Aumenta a pontuação
+                score_w_threats += 10
+            # Caso esteja a ameaçar uma torre preta
+            if 'A' in threats or 'H' in threats:
+                # Aumenta a pontuação
+                score_w_threats += 5
+            # Caso esteja a ameaçar um bispo preto ou um cavalo preto
+            if 'C' in threats or 'F' in threats or 'B' in threats or 'G' in threats:
+                # Aumenta a pontuação
+                score_w_threats += 3
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
     # Declaração da variavel que representa a quantos movimentos foram feitos pelas peças pretas
     score_b_positions = 0
+    # Declaração da variavel que representa a quantidades de peças pretas a ameaçar
+    score_b_threats = 0
     for i, p in enumerate(b):
         # Procura se o tabuleiro a analisar contêm essa peça
         ex = board.find(p)
@@ -500,11 +726,22 @@ def f_obj(board, play):
             score_b += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
             score_b_positions += position(p, ex)
+            # Declaração de variavel que guarda as peças em ameaça
+            threats = threat(board, p)
+            # Caso esteja a ameaçar uma rainha ou um rei branco
+            if 'd' in threats or 'e' in threats:
+                # Aumenta a pontuação
+                score_b_threats += 10
+            # Caso esteja a ameaçar uma torre branca
+            if 'a' in threats or 'h' in threats:
+                # Aumenta a pontuação
+                score_b_threats += 5
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
     # e se o jogador atual tem o melhor controlo do tabuleiro
-    return (score_w + score_w_positions - score_b - score_b_positions) * pow(-1, play)
+    return (score_w + score_w_positions + score_w_threats - score_b - score_b_positions - score_b_threats) * pow(-1,
+                                                                                                                 play)
 
 
 # OPENINGS — Aberturas
@@ -915,6 +1152,7 @@ def minimax_alpha_beta(tr, d, play, max_player, alpha, beta):
             break
 
     return ret_nd, ret
+
 
 def decide_move(board, play, nick):
     states = expand_tree([board, random.random(), 0, f_obj(board, play), []], 0, depth_analysis,
