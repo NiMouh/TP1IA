@@ -14,7 +14,7 @@ A função objetivo recebe o estado atual, recebe o estado atual e o qual jogado
 
 — Declaração das peças brancas e pretas em modo ‘string’ (a, h = torres; b, g = cavalos; c, f =bispo; d= rainha; e = rei; restantes = peões)
 
-— Declaração da valoração de cada uma das peças comidas (10 = torres; 7 = cavalos; 6 = bispos; 100 = rainha; 9999 = rei; 1 = peões)
+— Declaração da valoração de cada uma das peças comidas (50 = torres; 30 = cavalos; 30 = bispos; 90 = rainha; 900 = rei; 10 = peões)
 
 — Percorrer todas as peças contidas na 'string'
 
@@ -27,6 +27,8 @@ A função objetivo recebe o estado atual, recebe o estado atual e o qual jogado
 — Repetir o mesmo processo para as peças pretas
 
 — Devolver a diferença entre as duas pontuações e devolver um valor positivo ou negativo dependendo da peça com que jogamos.
+
+A escolha dos valores
 
 https://www.chessprogramming.org/Simplified_Evaluation_Function
 https://www.quora.com/What-are-some-heuristics-for-quickly-evaluating-chess-positions

@@ -6,7 +6,7 @@ from datetime import datetime
 
 time_out = 15.0
 
-moves_without_eat_to_draw = 100
+moves_without_eat_to_draw = 50
 
 
 def pos1_to_pos2(x):

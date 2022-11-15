@@ -8,7 +8,7 @@ interactive_flag = False
 depth_analysis = 3
 
 # Declaração da valoração de cada uma das peças
-pts = [50, 30, 30, 90, 900, 30, 30, 50, 10, 10, 10, 10, 10, 10, 10, 10]
+pts = [50, 30, 35, 90, 900, 35, 30, 50, 10, 10, 10, 10, 10, 10, 10, 10]
 
 
 def pos2_to_pos1(x2):
@@ -732,7 +732,7 @@ def f_obj(board, play):
             # Caso esteja a ameaçar o rei preto
             if 'E' in threats:
                 # Aumenta a pontuação
-                score_w_threats += 20
+                score_w_threats += 100
             # Caso esteja a ameaçar uma rainha preta
             if 'D' in threats:
                 # Aumenta a pontuação
@@ -741,8 +741,12 @@ def f_obj(board, play):
             if 'A' in threats or 'H' in threats:
                 # Aumenta a pontuação
                 score_w_threats += 5
-            # Caso esteja a ameaçar um bispo preto ou um cavalo preto
-            if 'C' in threats or 'F' in threats or 'B' in threats or 'G' in threats:
+            # Caso esteja a ameaçar um bispo preto
+            if 'C' in threats or 'F' in threats:
+                # Aumenta a pontuação
+                score_w_threats += 3.5
+            # Caso esteja a ameaçar um cavalo preto
+            if 'B' in threats or 'G' in threats:
                 # Aumenta a pontuação
                 score_w_threats += 3
 
@@ -766,7 +770,7 @@ def f_obj(board, play):
             # Caso esteja a ameaçar o rei branco
             if 'e' in threats:
                 # Aumenta a pontuação
-                score_b_threats += 20
+                score_b_threats += 100
             # Caso esteja a ameaçar uma rainha branca
             if 'd' in threats:
                 # Aumenta a pontuação
@@ -775,6 +779,14 @@ def f_obj(board, play):
             if 'a' in threats or 'h' in threats:
                 # Aumenta a pontuação
                 score_b_threats += 5
+            # Caso esteja a ameaçar um bispo branco
+            if 'c' in threats or 'f' in threats:
+                # Aumenta a pontuação
+                score_b_threats += 3.5
+            # Caso esteja a ameaçar um cavalo branco
+            if 'b' in threats or 'g' in threats:
+                # Aumenta a pontuação
+                score_b_threats += 3
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
