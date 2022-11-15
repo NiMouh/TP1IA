@@ -8,7 +8,7 @@ interactive_flag = False
 depth_analysis = 3
 
 # Declaração da valoração de cada uma das peças
-pts = [50, 30, 35, 90, 900, 35, 30, 50, 10, 10, 10, 10, 10, 10, 10, 10]
+pts = [50, 30, 30, 90, 900, 30, 30, 50, 10, 10, 10, 10, 10, 10, 10, 10]
 
 
 def pos2_to_pos1(x2):
@@ -730,11 +730,7 @@ def f_obj(board, play):
             # Declaração de variavel que guarda as peças em ameaça
             threats = active_threat(board, p)
             # Caso esteja a ameaçar o rei preto
-            if 'E' in threats:
-                # Aumenta a pontuação
-                score_w_threats += 100
-            # Caso esteja a ameaçar uma rainha preta
-            if 'D' in threats:
+            if 'D' in threats or 'E' in threats:
                 # Aumenta a pontuação
                 score_w_threats += 10
             # Caso esteja a ameaçar uma torre preta
@@ -742,11 +738,7 @@ def f_obj(board, play):
                 # Aumenta a pontuação
                 score_w_threats += 5
             # Caso esteja a ameaçar um bispo preto
-            if 'C' in threats or 'F' in threats:
-                # Aumenta a pontuação
-                score_w_threats += 3.5
-            # Caso esteja a ameaçar um cavalo preto
-            if 'B' in threats or 'G' in threats:
+            if 'C' in threats or 'F' in threats or 'B' in threats or 'G' in threats:
                 # Aumenta a pontuação
                 score_w_threats += 3
 
@@ -768,11 +760,7 @@ def f_obj(board, play):
             # Declaração de variavel que guarda as peças em ameaça
             threats = active_threat(board, p)
             # Caso esteja a ameaçar o rei branco
-            if 'e' in threats:
-                # Aumenta a pontuação
-                score_b_threats += 100
-            # Caso esteja a ameaçar uma rainha branca
-            if 'd' in threats:
+            if 'd' in threats or 'e' in threats:
                 # Aumenta a pontuação
                 score_b_threats += 10
             # Caso esteja a ameaçar uma torre branca
@@ -780,11 +768,7 @@ def f_obj(board, play):
                 # Aumenta a pontuação
                 score_b_threats += 5
             # Caso esteja a ameaçar um bispo branco
-            if 'c' in threats or 'f' in threats:
-                # Aumenta a pontuação
-                score_b_threats += 3.5
-            # Caso esteja a ameaçar um cavalo branco
-            if 'b' in threats or 'g' in threats:
+            if 'c' in threats or 'f' in threats or 'b' in threats or 'g' in threats:
                 # Aumenta a pontuação
                 score_b_threats += 3
 
@@ -1150,10 +1134,6 @@ def expand_tree(tr, dep, n, play):
         return tr
     suc = sucessor_states(tr[0], play)
     for s in suc:
-        # If the state has a very bad heuristic, do not insert it in the tree
-        if f_obj(s, play) < -1000:
-            continue
-        # Else, insert it in the tree
         tr = insert_state_tree(tr, expand_tree([s, random.random(), dep + 1, 0, f_obj(s, play), []], dep + 1, n - 1,
                                                1 - play), tr)
     return tr
