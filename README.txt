@@ -28,7 +28,35 @@ A função objetivo recebe o estado atual, recebe o estado atual e o qual jogado
 
 — Devolver a diferença entre as duas pontuações e devolver um valor positivo ou negativo dependendo da peça com que jogamos.
 
-A escolha dos valores
+A escolha dos valores foi feita para atingir os seguintes resultados:
+	1. Evitar trocas entre uma peça menor  (bispo e cavalo) por três peões
+	2. Encoragar possuir um par de bispos
+	3. Evitar troca de duas peças menores (bispo e cavalo)
+
+Atingimos o ponto um com as seguintes inequações:
+	- B > 3P
+	- N > 3P
+
+Ponto dois é atingido com a seguinte inequação:
+	- B > N
+
+Logo podemos chegar á seguinte conclusão:
+	- B > N > 3P
+
+Podemos chegar ao ponto 3 através de:
+	- B + N > R + P
+	- Q + P = 2R
+	- B + N = R + 1.5P
+	- Q + P = 2R
+
+Logo considerando o P = 10, temos:
+
+P = 10
+B = 35
+N = 30
+R = 50
+Q = 90
+
 
 https://www.chessprogramming.org/Simplified_Evaluation_Function
 https://www.quora.com/What-are-some-heuristics-for-quickly-evaluating-chess-positions

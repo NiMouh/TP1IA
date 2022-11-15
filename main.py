@@ -141,6 +141,10 @@ def position(piece, pos, play):
 
 # Função sobre ameaça ativa, recebe o tabuleiro e uma peça e retorna uma pontuação dado a quantidade que ela ameaça
 def active_threat(board, piece):
+    # Declaração das peças brancas e pretas em modo ‘string’
+    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+    w = 'abcdefghijklmnop'
+    b = 'ABCDEFGHIJKLMNOP'
 
     # Conjunto de peças que podem ameaçar a peça
     res = []
@@ -154,36 +158,36 @@ def active_threat(board, piece):
             if pos2[0] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:  # Ascii 'A' a 'P'
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sul
             if pos2[0] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Leste
             if pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Oeste
             if pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         return res
@@ -193,36 +197,36 @@ def active_threat(board, piece):
             if pos2[0] + i > 7 or pos2[1] + 3 - i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + 3 - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 3):  # Sudeste
             if pos2[0] - i < 0 or pos2[1] + 3 - i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + 3 - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 3):  # Sudoeste
             if pos2[0] - i < 0 or pos2[1] - 3 + i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - 3 + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 3):  # Noroeste
             if pos2[0] + i > 7 or pos2[1] - 3 + i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - 3 + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         return res
@@ -232,36 +236,36 @@ def active_threat(board, piece):
             if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudeste
             if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudoeste
             if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Noroeste
             if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         return res
@@ -271,72 +275,72 @@ def active_threat(board, piece):
             if pos2[0] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sul
             if pos2[0] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Leste
             if pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Oeste
             if pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Nordeste
             if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudeste
             if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudoeste
             if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 8):  # Noroeste
             if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         return res
@@ -347,72 +351,72 @@ def active_threat(board, piece):
             if pos2[0] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Sul (1 casa)
             if pos2[0] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Leste (1 casa)
             if pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Oeste (1 casa)
             if pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Nordeste (1 casa)
             if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Sudeste (1 casa)
             if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Sudoeste (1 casa)
             if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         for i in range(1, 2):  # Noroeste (1 casa)
             if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
-            if 97 <= ord(o) <= 122:  # Ascii de 'a' a 'z'
+            if o in w or o == 'z':  # Ascii de 'a' a 'z'
                 break
-            elif 65 <= ord(o) <= 80:
+            elif o in b:
                 res.append(o)
                 break
         return res
@@ -422,36 +426,36 @@ def active_threat(board, piece):
             if pos2[0] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' e 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sul
             if pos2[0] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'Z' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Leste
             if pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Oeste
             if pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         return res
@@ -464,9 +468,9 @@ def active_threat(board, piece):
                 if pos2[1] + j > 7:
                     break
                 o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + j))]
-                if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                     break
-                elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+                elif o in w:
                     res.append(o)
                     break
         for i in range(1, 3):  # Sul
@@ -476,9 +480,9 @@ def active_threat(board, piece):
                 if pos2[1] - j < 0:
                     break
                 o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - j))]
-                if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                     break
-                elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+                elif o in w:
                     res.append(o)
                     break
         for i in range(1, 3):  # Leste
@@ -488,9 +492,9 @@ def active_threat(board, piece):
                 if pos2[0] - j < 0:
                     break
                 o = board[pos2_to_pos1((pos2[0] - j, pos2[1] + i))]
-                if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                     break
-                elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+                elif o in w:
                     res.append(o)
                     break
         for i in range(1, 3):  # Oeste
@@ -500,9 +504,9 @@ def active_threat(board, piece):
                 if pos2[0] + j > 7:
                     break
                 o = board[pos2_to_pos1((pos2[0] + j, pos2[1] - i))]
-                if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+                if o in b or o == 'z':  # Ascii de 'A' a 'Z' a 'z'
                     break
-                elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+                elif o in w:
                     res.append(o)
                     break
         return res
@@ -512,36 +516,36 @@ def active_threat(board, piece):
             if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudeste
             if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudoeste
             if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Noroeste
             if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         return res
@@ -551,72 +555,72 @@ def active_threat(board, piece):
             if pos2[0] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sul
             if pos2[0] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Leste
             if pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Oeste
             if pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Nordeste
             if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudeste
             if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Sudoeste
             if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 8):  # Noroeste
             if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         return res
@@ -626,78 +630,95 @@ def active_threat(board, piece):
             if pos2[0] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1]))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Sul
             if pos2[0] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1]))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Leste
             if pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Oeste
             if pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0], pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Nordeste
             if pos2[0] + i > 7 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Sudeste
             if pos2[0] - i < 0 or pos2[1] + i > 7:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] + i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Sudoeste
             if pos2[0] - i < 0 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] - i, pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         for i in range(1, 2):  # Noroeste
             if pos2[0] + i > 7 or pos2[1] - i < 0:
                 break
             o = board[pos2_to_pos1((pos2[0] + i, pos2[1] - i))]  # Peça em ameaça
-            if 65 <= ord(o) <= 80 or ord(o) == 122:  # Ascii de 'A' a 'P' a 'z'
+            if o in b or o == 'z':  # Ascii de 'A' a 'Z' e 'z'
                 break
-            elif 97 <= ord(o) <= 112:  # Ascii de 'a' a 'p'
+            elif o in w:
                 res.append(o)
                 break
         return res
 
     # Caso não seja uma peça válida, retorna uma lista vazia
     return res
+
+
+# Função sobre ameaça passiva, recebe o tabuleiro e uma peça e retorna uma pontuação dado a ameaça sofrida
+def passive_threat(board, piece):
+    # Declaração das peças brancas e pretas em modo ‘string’
+    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+    w = 'abcdefghijklmnop'
+    b = 'ABCDEFGHIJKLMNOP'
+
+    # Conjunto de peças que podem ameaçar a peça
+    res = []
+    # Declaração da variável de posição da peça
+    pos = board.find(piece)
+    # Declaração da variável de posição da peça (2D)
+    pos2 = pos1_to_pos2(pos)
+
+    # POR FAZER
 
 
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
