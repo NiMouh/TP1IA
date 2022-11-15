@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3f735b04-ba5e-49d5-bd23-5a3ae857e9ae" name="Changes" comment="já ganho ao professor caralho">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_a_bit_smart.py" beforeDir="false" afterPath="$PROJECT_DIR$/client_a_bit_smart.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +87,8 @@
       <workItem from="1668369938634" duration="7246000" />
       <workItem from="1668377855891" duration="137000" />
       <workItem from="1668440324112" duration="9383000" />
+      <workItem from="1668450113488" duration="847000" />
+      <workItem from="1668549516139" duration="5466000" />
     </task>
     <task id="LOCAL-00001" summary="eeee">
       <created>1666555224087</created>
