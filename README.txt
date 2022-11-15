@@ -28,6 +28,10 @@ A função objetivo recebe o estado atual, recebe o estado atual e o qual jogado
 
 — Devolver a diferença entre as duas pontuações e devolver um valor positivo ou negativo dependendo da peça com que jogamos.
 
+https://www.chessprogramming.org/Simplified_Evaluation_Function
+https://www.quora.com/What-are-some-heuristics-for-quickly-evaluating-chess-positions
+https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
+https://www.chess.com/terms/chess-piece-value
 
 #2 Abordagem
 
@@ -48,3 +52,7 @@ Contêm o seguinte processo de análise:
 — No final retorna a lista de peças ameaçadas
 — Na função objetivo, irá ser declarado a variavel que guarda as peças ameaçadas e irá verificar qual a peça em questão.
 — Após determinar qual a peça em questão, irá ser dado uma valoração á variavel 'score_w_threats' ou 'score_b_threats', dependendo do jogador que a tem, relativamente á importância dessa peça no jogo.
+
+# Tentativa de abordagem
+https://www.chessprogramming.org/PV-Move
+https://www.chessprogramming.org/Guard_Heuristic
