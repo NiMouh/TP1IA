@@ -14,7 +14,7 @@ A função objetivo recebe o estado atual, recebe o estado atual e o qual jogado
 
 — Declaração das peças brancas e pretas em modo ‘string’ (a, h = torres; b, g = cavalos; c, f =bispo; d= rainha; e = rei; restantes = peões)
 
-— Declaração da valoração de cada uma das peças comidas (10 = torres; 7 = cavalos; 6 = bispos; 100 = rainha; 9999 = rei; 1 = peões)
+— Declaração da valoração de cada uma das peças comidas (50 = torres; 30 = cavalos; 30 = bispos; 90 = rainha; 900 = rei; 10 = peões)
 
 — Percorrer todas as peças contidas na 'string'
 
@@ -28,27 +28,63 @@ A função objetivo recebe o estado atual, recebe o estado atual e o qual jogado
 
 — Devolver a diferença entre as duas pontuações e devolver um valor positivo ou negativo dependendo da peça com que jogamos.
 
+A escolha dos valores foi feita para atingir os seguintes resultados:
+	1. Evitar trocas entre uma peça menor  (bispo e cavalo) por três peões
+	2. Encoragar possuir um par de bispos
+	3. Evitar troca de duas peças menores (bispo e cavalo)
+
+Atingimos o ponto um com as seguintes inequações:
+	- B > 3P
+	- N > 3P
+
+Ponto dois é atingido com a seguinte inequação:
+	- B > N
+
+Logo podemos chegar á seguinte conclusão:
+	- B > N > 3P
+
+Podemos chegar ao ponto 3 através de:
+	- B + N > R + P
+	- Q + P = 2R
+	- B + N = R + 1.5P
+	- Q + P = 2R
+
+Logo considerando o P = 10, temos:
+
+P = 10
+B = 35
+N = 30
+R = 50
+Q = 90
+
+
+https://www.chessprogramming.org/Simplified_Evaluation_Function
+https://www.quora.com/What-are-some-heuristics-for-quickly-evaluating-chess-positions
+https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
+https://www.chess.com/terms/chess-piece-value
 
 #2 Abordagem
 
-Nesta abordagem, adaptaremos o código já feito e teremos em conta uma avaliação de posições, além da preservação das nossas peças.  Aqui será dado uma estrutura para cada peça representado numa lista com 64 valores (um para cada quadrado no tabuleiro), e a sua posição no tabuleiro terá uma valoração associada ao mesmo, determinando assim a jogada ideal para aquela peça através de padrões de jogo.
-Também será tomado que as estruturas irão mudar dependendo do estado atual do jogo (aberturas, meio-do-jogo, fim-de-jogo) priorizando situações diferentes em cada um dos estados, onde num vai ser priorizado manter uma estrutura entre os peões e noutro será mais focado na preservação do rei e possíveis fugas.
+Nesta abordagem, adaptaremos o código já feito e teremos em conta uma avaliação de posições, além da preservação das nossas peças. Aqui será dado uma estrutura para cada peça representado numa lista com 64 valores (um para cada quadrado no tabuleiro), e a sua posição no tabuleiro terá uma valoração associada ao mesmo, determinando assim a jogada ideal para aquela peça através de padrões de jogo.
+Também será tomado que as estruturas irão mudar a depender do estado atual do jogo (aberturas, meio-do-jogo, fim-de-jogo) priorizando situações diferentes em cada um dos estados, onde num vai ser priorizado manter uma estrutura entre os peões e noutro será mais focado na preservação do rei e possíveis fugas.
 
 
+#3 Abordagem
 
-    # Declaração da variavel que representa o número de peças existentes no tabuleiro (entre )
-    num_pieces_pawn = pts[8] * board.count('i') + pts[8] * board.count('I') + pts[8] * board.count('j') + pts[
-        8] * board.count('J') + pts[8] * board.count('k') + pts[8] * board.count('K') + pts[8] * board.count('l') + pts[
-                          8] * board.count('L') + pts[8] * board.count('m') + pts[8] * board.count('M') + pts[
-                          8] * board.count('n') + pts[8] * board.count('N') + pts[8] * board.count('o') + pts[
-                          8] * board.count('O') + pts[8] * board.count('p') + pts[8] * board.count('P')
-    num_pieces_rook = pts[0] * board.count('a') + pts[0] * board.count('A') + pts[0] * board.count('h') + pts[
-        0] * board.count('H')
-    num_pieces_knight = pts[1] * board.count('b') + pts[1] * board.count('B') + pts[1] * board.count('g') + pts[
-        1] * board.count('G')
-    num_pieces_bishop = pts[2] * board.count('c') + pts[2] * board.count('C') + pts[2] * board.count('f') + pts[
-        2] * board.count('F')
-    num_pieces_queen = pts[3] * board.count('d') + pts[3] * board.count('D')
-    num_pieces_king = pts[4] * board.count('e') + pts[4] * board.count('E')
+Na seguinte abordagem, foi implementada uma função dado uma peça, irá determinar quais peças ela ameaça (seja acabada).
+A função irá receber o tabuleiro e a peça a analisar e irá devolver uma lista com as peças ameaçadas em formato 'string'.
 
-    num_pieces = num_pieces_pawn + num_pieces_rook + num_pieces_knight + num_pieces_bishop + num_pieces_queen + num_pieces_king
+Contêm o seguinte processo de análise:
+— Obtem a peça a analisar e a sua posição no tabuleiro em 2D
+— Verifica qual a peça em questão e qual o jogador que a tem
+— Percorre num ciclo for, todos os quadrados que essa peça pode legalmente mover-se
+— Caso encontre um quadrado ocupado por uma peça adversári, adiciona essa peça à lista de peças ameaçadas
+— No final retorna a lista de peças ameaçadas
+— Na função objetivo, irá ser declarado a variavel que guarda as peças ameaçadas e irá verificar qual a peça em questão.
+— Após determinar qual a peça em questão, irá ser dado uma valoração á variavel 'score_w_threats' ou 'score_b_threats', dependendo do jogador que a tem, relativamente á importância dessa peça no jogo.
+
+# Tentativa de abordagem
+https://www.chessprogramming.org/PV-Move
+https://www.chessprogramming.org/Guard_Heuristic
+=======
+— Após determinar qual a peça em questão, irá ser dado uma valoração á variavel 'score_w_threats' ou 'score_b_threats', dependendo do jogador que a tem, relativamente á importância dessa peça no jogo.
