@@ -293,32 +293,35 @@ def get_available_positions(state, p2, piece):
             ret.extend(aux)
     return ret
 
+def find_all(s, ch):
+    return [i for i, letter in enumerate(s) if letter == ch]
 
 def sucessor_states(state, player):
     ret = []
 
-    # print('Player=%d' % player)
-
     for x in range(ord('a') - player * 32, ord('p') - player * 32 + 1):
 
-        p = state.find(chr(x))
-        if p < 0:
+        p_all = find_all(state, chr(x))
+
+        if len(p_all) == 0:
             continue
-        p2 = pos1_to_pos2(p)
 
-        pos_available = get_available_positions(state, p2, chr(x))
-        # print('%c - Tot %d' % (chr(x), len(pos_available)))
+        for p in p_all:
+            p2 = pos1_to_pos2(p)
 
-        for a in pos_available:
-            state_aux = list('%s' % state)
-            state_aux[p] = 'z'
-            if ord('i') <= x <= ord('p') and a[0] == 7:
-                state_aux[pos2_to_pos1(a)] = 'd'
-            elif ord('I') <= x <= ord('P') and a[0] == 0:
-                state_aux[pos2_to_pos1(a)] = 'D'
-            else:
-                state_aux[pos2_to_pos1(a)] = chr(x)
-            ret.append(''.join(state_aux))
+            pos_available = get_available_positions(state, p2, chr(x))
+            # print('%c - Tot %d' % (chr(x), len(pos_available)))
+
+            for a in pos_available:
+                state_aux = list('%s' % state)
+                state_aux[p] = 'z'
+                if ord('i') <= x <= ord('p') and a[0] == 7:
+                    state_aux[pos2_to_pos1(a)] = 'd'
+                elif ord('I') <= x <= ord('P') and a[0] == 0:
+                    state_aux[pos2_to_pos1(a)] = 'D'
+                else:
+                    state_aux[pos2_to_pos1(a)] = chr(x)
+                ret.append(''.join(state_aux))
 
     return ret
 

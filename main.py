@@ -732,6 +732,165 @@ def stalemate(board):
     return False
 
 
+# Função de dominio, recebe o tabuleiro e o jogador. Retorna quais os sectores do tabuleiro o jogador domina
+def domain(board, play):
+    """ SETORES
+  ╔════╤════╤════╦════╤════╦════╤════╤════╗
+0 ║    │    │    ║    │    ║    │    │    ║
+  ╟────┼─11─┼────║────┼────║────┼─ 9 ┼────╢
+1 ║    │    │    ║    7    ║    │    │    ║
+  ╠══════════════╣────┼────╠══════════════╣
+2 ║    │    │    ║    │    ║    │    │    ║
+  ╟────┼─10─┼────╠═════════╣────┼─ 8─┼────╢
+3 ║    │    │    ║    │    ║    │    │    ║
+  ╠══════════════╣─── 6 ───╠══════════════╣
+4 ║    │    │    ║    │    ║    │    │    ║
+  ╟────┼─ 2─┼────╠═════════╣────┼─ 4─┼────╢
+5 ║    │    │    ║    │    ║    │    │    ║
+  ╠══════════════╣────┼────╠══════════════╣
+6 ║    │    │    ║    5    ║    │    │    ║
+  ╟────┼─ 1─┼────║────┼────║────┼─ 3─┼────╢
+7 ║    │    │    ║    │    ║    │    │    ║
+  ╚════╧════╧════╩════╧════╩════╧════╧════╝
+    """
+    # Declaração das peças brancas e pretas em modo ‘string’
+    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+    w = 'abcdefghijklmnop'
+    b = 'ABCDEFGHIJKLMNOP'
+
+    # Declaração da matriz de sectores
+    sectors = [[], [], [], [], [], [], [], [], [], [], [], []]
+
+    # Percorre o tabuleiro
+    for i in range(len(board)):
+        # Declara a posição atual em 2D
+        pos2D = pos1_to_pos2(i)
+
+        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 0 e 1 no eixo y, o jogador domina o setor 1 (11)
+        if 0 <= pos2D[0] <= 2 and 0 <= pos2D[1] <= 1:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 1
+            if board[i] in w:
+                sectors[0].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 1
+            elif board[i] in b:
+                sectors[0].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 1
+            else:
+                sectors[0].append(0)
+        # Caso a posição atual esteja entre 3 e 4 no eixo x e entre 0 e 3 no eixo y, o jogador domina o setor 2 (7)
+        elif 3 <= pos2D[0] <= 4 and 0 <= pos2D[1] <= 3:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 2
+            if board[i] in w:
+                sectors[1].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 2
+            elif board[i] in b:
+                sectors[1].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 2
+            else:
+                sectors[1].append(0)
+        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 0 e 1 no eixo y, o jogador domina o setor 3 (9)
+        elif 5 <= pos2D[0] <= 7 and 0 <= pos2D[1] <= 1:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 3
+            if board[i] in w:
+                sectors[2].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 3
+            elif board[i] in b:
+                sectors[2].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 3
+            else:
+                sectors[2].append(0)
+        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 2 e 3 no eixo y, o jogador domina o setor 4 (10)
+        elif 0 <= pos2D[0] <= 2 and 2 <= pos2D[1] <= 3:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 4
+            if board[i] in w:
+                sectors[3].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 4
+            elif board[i] in b:
+                sectors[3].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 4
+            else:
+                sectors[3].append(0)
+        # Caso a posição atual esteja entre 3 e 4 no eixo x e entre 3 e 4 no eixo y, o jogador domina o setor 5 (6)
+        elif 3 <= pos2D[0] <= 4 and 3 <= pos2D[1] <= 4:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 5
+            if board[i] in w:
+                sectors[4].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 5
+            elif board[i] in b:
+                sectors[4].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 5
+            else:
+                sectors[4].append(0)
+        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 2 e 3 no eixo y, o jogador domina o setor 6 (8)
+        elif 5 <= pos2D[0] <= 7 and 2 <= pos2D[1] <= 3:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 6
+            if board[i] in w:
+                sectors[5].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 6
+            elif board[i] in b:
+                sectors[5].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 6
+            else:
+                sectors[5].append(0)
+        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 4 e 5 no eixo y, o jogador domina o setor 7 (2)
+        elif 0 <= pos2D[0] <= 2 and 4 <= pos2D[1] <= 5:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 7
+            if board[i] in w:
+                sectors[6].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 7
+            elif board[i] in b:
+                sectors[6].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 7
+            else:
+                sectors[6].append(0)
+        # Caso a posição atual esteja entre 3 e 4 no eixo x e entre 5 e 7 no eixo y, o jogador domina o setor 8 (5)
+        elif 3 <= pos2D[0] <= 4 and 5 <= pos2D[1] <= 7:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 8
+            if board[i] in w:
+                sectors[7].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 8
+            elif board[i] in b:
+                sectors[7].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 8
+            else:
+                sectors[7].append(0)
+        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 4 e 5 no eixo y, o jogador domina o setor 9 (4)
+        elif 5 <= pos2D[0] <= 7 and 4 <= pos2D[1] <= 5:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 9
+            if board[i] in w:
+                sectors[8].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 9
+            elif board[i] in b:
+                sectors[8].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 9
+            else:
+                sectors[8].append(0)
+        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 6 e 7 no eixo y, o jogador domina o setor 10 (1)
+        elif 0 <= pos2D[0] <= 2 and 6 <= pos2D[1] <= 7:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 10
+            if board[i] in w:
+                sectors[9].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 10
+            elif board[i] in b:
+                sectors[9].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 10
+            else:
+                sectors[9].append(0)
+        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 6 e 7 no eixo y, o jogador domina o setor 11 (3)
+        elif 5 <= pos2D[0] <= 7 and 6 <= pos2D[1] <= 7:
+            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 11
+            if board[i] in w:
+                sectors[10].append(1)
+            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 11
+            elif board[i] in b:
+                sectors[10].append(2)
+            # Caso esteja vazio, adiciona (append) 0 ao setor 11
+            else:
+                sectors[10].append(0)
+    # Retorna a lista de setores
+    return sectors
+
+
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
 # (1 para as brancas 0 para as pretas)
 def f_obj(board, play):
@@ -1078,31 +1237,36 @@ def get_available_positions(state, p2, piece):
     return ret
 
 
+def find_all(s, ch):
+    return [i for i, letter in enumerate(s) if letter == ch]
+
+
 def sucessor_states(state, player):
     ret = []
 
-    # print('Player=%d' % player)
-
     for x in range(ord('a') - player * 32, ord('p') - player * 32 + 1):
 
-        p = state.find(chr(x))
-        if p < 0:
+        p_all = find_all(state, chr(x))
+
+        if len(p_all) == 0:
             continue
-        p2 = pos1_to_pos2(p)
 
-        pos_available = get_available_positions(state, p2, chr(x))
-        # print('%c - Tot %d' % (chr(x), len(pos_available)))
+        for p in p_all:
+            p2 = pos1_to_pos2(p)
 
-        for a in pos_available:
-            state_aux = list('%s' % state)
-            state_aux[p] = 'z'
-            if ord('i') <= x <= ord('p') and a[0] == 7:
-                state_aux[pos2_to_pos1(a)] = 'd'
-            elif ord('I') <= x <= ord('P') and a[0] == 0:
-                state_aux[pos2_to_pos1(a)] = 'D'
-            else:
-                state_aux[pos2_to_pos1(a)] = chr(x)
-            ret.append(''.join(state_aux))
+            pos_available = get_available_positions(state, p2, chr(x))
+            # print('%c - Tot %d' % (chr(x), len(pos_available)))
+
+            for a in pos_available:
+                state_aux = list('%s' % state)
+                state_aux[p] = 'z'
+                if ord('i') <= x <= ord('p') and a[0] == 7:
+                    state_aux[pos2_to_pos1(a)] = 'd'
+                elif ord('I') <= x <= ord('P') and a[0] == 0:
+                    state_aux[pos2_to_pos1(a)] = 'D'
+                else:
+                    state_aux[pos2_to_pos1(a)] = chr(x)
+                ret.append(''.join(state_aux))
 
     return ret
 

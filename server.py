@@ -4,9 +4,9 @@ import sys
 import time
 from datetime import datetime
 
-time_out = 15
+time_out = 15.0
 
-moves_without_eat_to_draw = 20
+moves_without_eat_to_draw = 100
 
 
 def pos1_to_pos2(x):
@@ -254,24 +254,27 @@ def sucessor_states(state, player):
 
     for x in range(ord('a') - player * 32, ord('p') - player * 32 + 1):
 
-        p = state.find(chr(x))
-        if p < 0:
+        p_all = find_all(state, chr(x))
+
+        if len(p_all) == 0:
             continue
-        p2 = pos1_to_pos2(p)
 
-        pos_available = get_available_positions(state, p2, chr(x))
-        # print('%c - Tot %d' % (chr(x), len(pos_available)))
+        for p in p_all:
+            p2 = pos1_to_pos2(p)
 
-        for a in pos_available:
-            state_aux = list('%s' % state)
-            state_aux[p] = 'z'
-            if ord('i') <= x <= ord('p') and a[0] == 7:
-                state_aux[pos2_to_pos1(a)] = 'd'
-            elif ord('I') <= x <= ord('P') and a[0] == 0:
-                state_aux[pos2_to_pos1(a)] = 'D'
-            else:
-                state_aux[pos2_to_pos1(a)] = chr(x)
-            ret.append(''.join(state_aux))
+            pos_available = get_available_positions(state, p2, chr(x))
+            # print('%c - Tot %d' % (chr(x), len(pos_available)))
+
+            for a in pos_available:
+                state_aux = list('%s' % state)
+                state_aux[p] = 'z'
+                if ord('i') <= x <= ord('p') and a[0] == 7:
+                    state_aux[pos2_to_pos1(a)] = 'd'
+                elif ord('I') <= x <= ord('P') and a[0] == 0:
+                    state_aux[pos2_to_pos1(a)] = 'D'
+                else:
+                    state_aux[pos2_to_pos1(a)] = chr(x)
+                ret.append(''.join(state_aux))
 
     return ret
 
@@ -426,8 +429,10 @@ def print_board(prev, cur, idx, nick):
 def get_description_piece(piece):
     if ord(piece) < 97:
         ret = 'Black '
+        type = 1
     else:
         ret = 'White '
+        type = 0
     if piece.lower() in ('a', 'h'):
         ret = ret + 'Tower'
     elif piece.lower() in ('b', 'g'):
@@ -440,32 +445,62 @@ def get_description_piece(piece):
         ret = ret + 'King'
     else:
         ret = ret + 'Pawn'
-    return ret
+    return ret, type
+
+
+def find_all(s, ch):
+    # print('Find_all(_%s_%c' % (s, ch))
+    return [i for i, letter in enumerate(s) if letter == ch]
 
 
 def description_move(prev, cur, idx, nick):
-    # print('description_move()')
+    # print('description_move(idx=%d)' % idx)
+    # print('prev_%s_' % prev)
+    # print('%s' % print_board(None, prev, idx, nick))
+    # print('cur_%s_' % cur)
+    # print('%s' % print_board(None, cur, idx, nick))
     ret = 'Move [%d - %s]: ' % (idx, nick)
 
     cur_blank = [i for i, ltr in enumerate(cur) if ltr == 'z']
     prev_not_blank = [i for i, ltr in enumerate(prev) if ltr != 'z']
+    # print('Cur Blank')
     # print(cur_blank)
+    # print('Prev not blank')
     # print(prev_not_blank)
     moved = list(set(cur_blank) & set(prev_not_blank))
     # print(moved)
     moved = moved[0]
 
-    desc_piece = get_description_piece(prev[moved])
+    desc_piece, type_piece = get_description_piece(prev[moved])
 
     fr = pos1_to_pos2(moved)
-    to = pos1_to_pos2(cur.find(prev[moved]))
-    # print(fr)
-    # print(to)
+
+    # to = pos1_to_pos2(cur.find(prev[moved]))
+
+    to = None
+    tos = find_all(cur, prev[moved])
+    for t in tos:
+        if prev[t] != cur[t]:
+            to = pos1_to_pos2(t)
+            break
+
+    if to is None:  # pawn --> queen
+        # print('Handle exceptional case.............................')
+        # print('Cur_%s_' % cur)
+        # print('Prev_%s_' % prev)
+        # print('Char_%c_' % chr(ord('d') - type_piece * 32))
+        tos = find_all(cur, chr(ord('d') - type_piece * 32))
+        fr_aux = find_all(prev, chr(ord('d') - type_piece * 32))
+        for t in tos:
+            if t not in fr_aux:
+                to = pos1_to_pos2(t)
+                break
 
     ret = ret + desc_piece + ' (%d, %d) --> (%d, %d)' % (fr[0], fr[1], to[0], to[1])
     if prev[pos2_to_pos1(to)] != 'z':
-        desc_piece = get_description_piece(prev[pos2_to_pos1(to)])
+        desc_piece, type_piece = get_description_piece(prev[pos2_to_pos1(to)])
         ret = ret + ' eaten ' + desc_piece
+    # print('Out description_move()')
     return ret
 
 
@@ -523,19 +558,19 @@ while True:
             cur_state = clients[idx_move % 2].recv(1024).decode('ascii')
             if len(cur_state) > 0:
                 break
-        # print('Received state_%s_' % cur_state)
+        # print('1 - Received state_%s_' % cur_state)
 
         valid_mv = valid_move(prev_state, cur_state, idx_move % 2)
         # print('Valid %d' % valid_mv)
         if not valid_mv:
             file_out.write('%s\n' % description_move(prev_state, cur_state, idx_move, nicks[idx_move % 2]))
             print('%s' % description_move(prev_state, cur_state, idx_move, nicks[idx_move % 2]))
-            print('Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
-                idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-                colors[1 - (idx_move % 2)]))
-            file_out.write('Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
-                idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-                colors[1 - (idx_move % 2)]))
+            print('[%d_2]Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
+            1 - (idx_move % 2), idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+            colors[1 - (idx_move % 2)]))
+            file_out.write('[%d_2]Invalid move by %d - %s. Player %d - %s (%s) wins. Game finished. ' % (
+            1 - (idx_move % 2), idx_move % 2, nicks[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
+            colors[1 - (idx_move % 2)]))
             break
         # print('printing board...')
         board = print_board(prev_state, cur_state, idx_move, nicks[idx_move % 2])
@@ -544,11 +579,12 @@ while True:
 
         # print('Evaluating finish')
         finish = check_winner(cur_state)
-        # print('Evaluated finish %d' % finish)
+        # print('2 - Evaluated finish %d' % finish)
 
         if finish < 2:
-            print('Player %d - %s (%s) wins. Game finished. ' % (finish, nicks[finish], colors[finish]))
-            file_out.write('Player %d - %s (%s) wins. Game finished. ' % (finish, nicks[finish], colors[finish]))
+            print('[%d_0]Player %d - %s (%s) wins. Game finished. ' % (finish, finish, nicks[finish], colors[finish]))
+            file_out.write(
+                '[%d_0]Player %d - %s (%s) wins. Game finished. ' % (finish, finish, nicks[finish], colors[finish]))
             break
 
         eat = pieces_eaten(prev_state, cur_state)
@@ -557,22 +593,23 @@ while True:
         else:
             moves_without_eat = 0
         if moves_without_eat >= moves_without_eat_to_draw:
-            print('%d consecutives without eaten pieces. %s - %s Draw. Game finished. ' % (
-                moves_without_eat, nicks[0], nicks[1]))
-            file_out.write('%d consecutives without eaten pieces. %s - %s Draw. Game finished. ' % (
-                moves_without_eat, nicks[0], nicks[1]))
+            print('[2_0]%d consecutives without eaten pieces. %s - %s Draw. Game finished. ' % (
+            moves_without_eat, nicks[0], nicks[1]))
+            file_out.write('[2_0]%d consecutives without eaten pieces. %s - %s Draw. Game finished. ' % (
+            moves_without_eat, nicks[0], nicks[1]))
             break
 
         idx_move += 1
         time.sleep(0.1)
         # print('Done...')
-    except:
-        print('Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
-            idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-            colors[1 - (idx_move % 2)]))
-        file_out.write('Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
-            idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2), nicks[1 - (idx_move % 2)],
-            colors[1 - (idx_move % 2)]))
+    except Exception as err:
+        print('Exception! ', err)
+        print('[%d_1]Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
+        1 - (idx_move % 2), idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2),
+        nicks[1 - (idx_move % 2)], colors[1 - (idx_move % 2)]))
+        file_out.write('[%d_1]Timeout by %d - %s: %s. Player %d - %s (%s) wins. Game finished. ' % (
+        1 - (idx_move % 2), idx_move % 2, nicks[idx_move % 2], colors[idx_move % 2], 1 - (idx_move % 2),
+        nicks[1 - (idx_move % 2)], colors[1 - (idx_move % 2)]))
         break
 
 file_out.close()
