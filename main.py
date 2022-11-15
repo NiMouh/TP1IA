@@ -22,7 +22,7 @@ def pos1_to_pos2(x):
 
 
 # Função posição começo do jogo, recebe uma peça a posição e o jogador
-def position(piece, pos):
+def position(piece, pos, play):
     # Declaração das tabelas de posição (priorizar jogo centralizado e peças avançadas)
     # Tabela de posições da rainha
     queen_table = [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0,
@@ -86,32 +86,56 @@ def position(piece, pos):
 
     # Se a peça for um cavalo ('a' e 'h')
     if piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
-        # Retorna a pontuação da tabela de posição do cavalo
+        # Caso sejam as brancas
+        if play == 1:
+            # Retorna a pontuação da tabela de posição do cavalo (invertida)
+            return list(reversed(knight_table))[pos]
+        # Senão retorna a pontuação da tabela de posição do cavalo
         return knight_table[pos]
 
     # Se a peça for um bispo ('b' e 'g')
     elif piece == 'b' or piece == 'B' or piece == 'g' or piece == 'G':
-        # Retorna a pontuação da tabela de posição do bispo
+        # Caso sejam as brancas
+        if play == 1:
+            # Retorna a pontuação da tabela da posição do bispo (invetida)
+            return list(reversed(bishop_table))[pos]
+        # Senão retorna a pontuação da tabela de posição do bispo
         return bishop_table[pos]
 
     # Se a peça for uma torre ('c' e 'f')
     elif piece == 'c' or piece == 'C' or piece == 'f' or piece == 'F':
-        # Retorna a pontuação da tabela de posição da torre
+        # Caso sejam as brancas
+        if play == 1:
+            # Retorna a pontuação da tabela de posição da torre (invertida)
+            return list(reversed(rook_table))[pos]
+        # Senão retorna a pontuação da tabela de posição da torre
         return rook_table[pos]
 
     # Se a peça for uma rainha ('d')
     elif piece == 'd' or piece == 'D':
-        # Retorna a pontuação da tabela de posição da rainha
+        # Caso sejam as brancas
+        if play == 1:
+            # Retorna a pontuação da tabela de posição da rainha (invertida)
+            return list(reversed(queen_table))[pos]
+        # Senão retorna a pontuação da tabela de posição da rainha
         return queen_table[pos]
 
     # Se a peça for um rei ('e')
     elif piece == 'e' or piece == 'E':
-        # Retorna a pontuação da tabela de posição do rei
+        # Caso sejam as brancas
+        if play == 1:
+            # Retorna a pontuação da tabela de posição do rei (invertida)
+            return list(reversed(king_table))[pos]
+        # Senão retorna a pontuação da tabela de posição do rei
         return king_table[pos]
 
     # Se a peça for um peão (está entre i e p)
     else:
-        # Retorna a pontuação da tabela de posição do peão
+        # Caso sejam as brancas
+        if play == 1:
+            # Retorna a pontuação da tabela de posição do peão (invertida)
+            return list(reversed(pawn_table))[pos]
+        # Senão retorna a pontuação da tabela de posição do peão
         return pawn_table[pos]
 
 
@@ -697,200 +721,6 @@ def passive_threat(board, piece):
     # POR FAZER
 
 
-# Função empate, recebe o tabuleiro e avalia se existe possibilidade de não existir checkmates
-def stalemate(board):
-    # Caso ambos os lados tenham um rei solitário, o jogo é empate
-    if board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 2:
-        return True
-    # Caso um lado tenha um rei e uma peça menor e o outro lado tenha um rei solitário, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 3:
-        if board.count('i') == 1 or board.count('j') == 1 or board.count('k') == 1 or board.count(
-                'l') == 1 or board.count('m') == 1 or board.count('n') == 1 or board.count('o') == 1 or board.count(
-            'p') == 1 or board.count('I') == 1 or board.count('J') == 1 or board.count('K') == 1 or board.count(
-            'L') == 1 or board.count('M') == 1 or board.count('N') == 1 or board.count('O') == 1 or board.count(
-            'P') == 1:
-            return True
-    # Caso ambos os lados tenham um rei e um bispo no mesmo quadrado de cor, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
-        # Caso ambos os bipos estejam no mesmo quadrado de cor
-        if board.count('f') == 1 and board.count('F') == 1 or board.count('c') == 1 and board.count('C') == 1:
-            return True
-    # Caso estejam 2 cavalos contra um rei solitário, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
-        if board.count('b') == 1 and board.count('B') == 1 or board.count('g') == 1 and board.count('G') == 1:
-            return True
-    # Caso ambos os lados tenham um rei e uma peça menor, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
-        if board.count('i') == 1 or board.count('j') == 1 or board.count('k') == 1 or board.count(
-                'l') == 1 or board.count('m') == 1 or board.count('n') == 1 or board.count('o') == 1 or board.count(
-            'p') == 1 and board.count('I') == 1 or board.count('J') == 1 or board.count('K') == 1 or board.count(
-            'L') == 1 or board.count('M') == 1 or board.count('N') == 1 or board.count('O') == 1 or board.count(
-            'P') == 1:
-            return True
-
-    # Caso não seja empate, retorna falso
-    return False
-
-
-# Função de dominio, recebe o tabuleiro e o jogador. Retorna quais os sectores do tabuleiro o jogador domina
-def domain(board, play):
-    """ SETORES
-  ╔════╤════╤════╦════╤════╦════╤════╤════╗
-0 ║    │    │    ║    │    ║    │    │    ║
-  ╟────┼─11─┼────║────┼────║────┼─ 9 ┼────╢
-1 ║    │    │    ║    7    ║    │    │    ║
-  ╠══════════════╣────┼────╠══════════════╣
-2 ║    │    │    ║    │    ║    │    │    ║
-  ╟────┼─10─┼────╠═════════╣────┼─ 8─┼────╢
-3 ║    │    │    ║    │    ║    │    │    ║
-  ╠══════════════╣─── 6 ───╠══════════════╣
-4 ║    │    │    ║    │    ║    │    │    ║
-  ╟────┼─ 2─┼────╠═════════╣────┼─ 4─┼────╢
-5 ║    │    │    ║    │    ║    │    │    ║
-  ╠══════════════╣────┼────╠══════════════╣
-6 ║    │    │    ║    5    ║    │    │    ║
-  ╟────┼─ 1─┼────║────┼────║────┼─ 3─┼────╢
-7 ║    │    │    ║    │    ║    │    │    ║
-  ╚════╧════╧════╩════╧════╩════╧════╧════╝
-    """
-    # Declaração das peças brancas e pretas em modo ‘string’
-    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
-    w = 'abcdefghijklmnop'
-    b = 'ABCDEFGHIJKLMNOP'
-
-    # Declaração da matriz de sectores
-    sectors = [[], [], [], [], [], [], [], [], [], [], [], []]
-
-    # Percorre o tabuleiro
-    for i in range(len(board)):
-        # Declara a posição atual em 2D
-        pos2D = pos1_to_pos2(i)
-
-        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 0 e 1 no eixo y, o jogador domina o setor 1 (11)
-        if 0 <= pos2D[0] <= 2 and 0 <= pos2D[1] <= 1:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 1
-            if board[i] in w:
-                sectors[0].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 1
-            elif board[i] in b:
-                sectors[0].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 1
-            else:
-                sectors[0].append(0)
-        # Caso a posição atual esteja entre 3 e 4 no eixo x e entre 0 e 3 no eixo y, o jogador domina o setor 2 (7)
-        elif 3 <= pos2D[0] <= 4 and 0 <= pos2D[1] <= 3:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 2
-            if board[i] in w:
-                sectors[1].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 2
-            elif board[i] in b:
-                sectors[1].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 2
-            else:
-                sectors[1].append(0)
-        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 0 e 1 no eixo y, o jogador domina o setor 3 (9)
-        elif 5 <= pos2D[0] <= 7 and 0 <= pos2D[1] <= 1:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 3
-            if board[i] in w:
-                sectors[2].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 3
-            elif board[i] in b:
-                sectors[2].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 3
-            else:
-                sectors[2].append(0)
-        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 2 e 3 no eixo y, o jogador domina o setor 4 (10)
-        elif 0 <= pos2D[0] <= 2 and 2 <= pos2D[1] <= 3:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 4
-            if board[i] in w:
-                sectors[3].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 4
-            elif board[i] in b:
-                sectors[3].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 4
-            else:
-                sectors[3].append(0)
-        # Caso a posição atual esteja entre 3 e 4 no eixo x e entre 3 e 4 no eixo y, o jogador domina o setor 5 (6)
-        elif 3 <= pos2D[0] <= 4 and 3 <= pos2D[1] <= 4:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 5
-            if board[i] in w:
-                sectors[4].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 5
-            elif board[i] in b:
-                sectors[4].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 5
-            else:
-                sectors[4].append(0)
-        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 2 e 3 no eixo y, o jogador domina o setor 6 (8)
-        elif 5 <= pos2D[0] <= 7 and 2 <= pos2D[1] <= 3:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 6
-            if board[i] in w:
-                sectors[5].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 6
-            elif board[i] in b:
-                sectors[5].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 6
-            else:
-                sectors[5].append(0)
-        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 4 e 5 no eixo y, o jogador domina o setor 7 (2)
-        elif 0 <= pos2D[0] <= 2 and 4 <= pos2D[1] <= 5:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 7
-            if board[i] in w:
-                sectors[6].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 7
-            elif board[i] in b:
-                sectors[6].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 7
-            else:
-                sectors[6].append(0)
-        # Caso a posição atual esteja entre 3 e 4 no eixo x e entre 5 e 7 no eixo y, o jogador domina o setor 8 (5)
-        elif 3 <= pos2D[0] <= 4 and 5 <= pos2D[1] <= 7:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 8
-            if board[i] in w:
-                sectors[7].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 8
-            elif board[i] in b:
-                sectors[7].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 8
-            else:
-                sectors[7].append(0)
-        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 4 e 5 no eixo y, o jogador domina o setor 9 (4)
-        elif 5 <= pos2D[0] <= 7 and 4 <= pos2D[1] <= 5:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 9
-            if board[i] in w:
-                sectors[8].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 9
-            elif board[i] in b:
-                sectors[8].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 9
-            else:
-                sectors[8].append(0)
-        # Caso a posição atual esteja entre 0 e 2 no eixo x e entre 6 e 7 no eixo y, o jogador domina o setor 10 (1)
-        elif 0 <= pos2D[0] <= 2 and 6 <= pos2D[1] <= 7:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 10
-            if board[i] in w:
-                sectors[9].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 10
-            elif board[i] in b:
-                sectors[9].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 10
-            else:
-                sectors[9].append(0)
-        # Caso a posição atual esteja entre 5 e 7 no eixo x e entre 6 e 7 no eixo y, o jogador domina o setor 11 (3)
-        elif 5 <= pos2D[0] <= 7 and 6 <= pos2D[1] <= 7:
-            # Caso esteja uma peça branca nessa posição, adiciona (append) 1 ao setor 11
-            if board[i] in w:
-                sectors[10].append(1)
-            # Caso esteja uma peça preta nessa posição, adiciona (append) 2 ao setor 11
-            elif board[i] in b:
-                sectors[10].append(2)
-            # Caso esteja vazio, adiciona (append) 0 ao setor 11
-            else:
-                sectors[10].append(0)
-    # Retorna a lista de setores
-    return sectors
-
-
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
 # (1 para as brancas 0 para as pretas)
 def f_obj(board, play):
@@ -909,11 +739,6 @@ def f_obj(board, play):
     # Declaração da variavel que representa a quantidades de peças brancas a ameaçar
     score_w_threats = 0
 
-    # Caso seja um caso de empate
-    if stalemate(board):
-        # Retorna 0
-        return 0
-
     for i, p in enumerate(w):
         # Procura se o tabuleiro a analisar contêm essa peça
         ex = board.find(p)
@@ -922,11 +747,15 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
-            score_w_positions += position(p, ex)
+            score_w_positions += position(p, ex, 1)
             # Declaração de variavel que guarda as peças em ameaça
             threats = active_threat(board, p)
-            # Caso esteja a ameaçar uma rainha ou um rei preto
-            if 'D' in threats or 'E' in threats:
+            # Caso esteja a ameaçar o rei preto
+            if 'E' in threats:
+                # Aumenta a pontuação
+                score_w_threats += 20
+            # Caso esteja a ameaçar uma rainha preta
+            if 'D' in threats:
                 # Aumenta a pontuação
                 score_w_threats += 10
             # Caso esteja a ameaçar uma torre preta
@@ -952,11 +781,15 @@ def f_obj(board, play):
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
-            score_b_positions += position(p, ex)
+            score_b_positions += position(p, ex, 0)
             # Declaração de variavel que guarda as peças em ameaça
             threats = active_threat(board, p)
-            # Caso esteja a ameaçar uma rainha ou um rei branco
-            if 'd' in threats or 'e' in threats:
+            # Caso esteja a ameaçar o rei branco
+            if 'e' in threats:
+                # Aumenta a pontuação
+                score_b_threats += 20
+            # Caso esteja a ameaçar uma rainha branca
+            if 'd' in threats:
                 # Aumenta a pontuação
                 score_b_threats += 10
             # Caso esteja a ameaçar uma torre branca
@@ -1255,7 +1088,6 @@ def sucessor_states(state, player):
             p2 = pos1_to_pos2(p)
 
             pos_available = get_available_positions(state, p2, chr(x))
-            # print('%c - Tot %d' % (chr(x), len(pos_available)))
 
             for a in pos_available:
                 state_aux = list('%s' % state)
@@ -1305,18 +1137,15 @@ def description_move(prev, cur, idx, nick):
 
     cur_blank = [i for i, ltr in enumerate(cur) if ltr == 'z']
     prev_not_blank = [i for i, ltr in enumerate(prev) if ltr != 'z']
-    # print(cur_blank)
-    # print(prev_not_blank)
+
     moved = list(set(cur_blank) & set(prev_not_blank))
-    # print(moved)
+
     moved = moved[0]
 
     desc_piece = get_description_piece(prev[moved])
 
     fr = pos1_to_pos2(moved)
     to = pos1_to_pos2(cur.find(prev[moved]))
-    # print(fr)
-    # print(to)
 
     ret = ret + desc_piece + ' (%d, %d) --> (%d, %d)' % (fr[0], fr[1], to[0], to[1])
     if prev[pos2_to_pos1(to)] != 'z':
@@ -1390,18 +1219,11 @@ def decide_move(board, play, nick):
     states = expand_tree([board, random.random(), 0, f_obj(board, play), []], 0, depth_analysis,
                          play)  # [board, hash, depth, g(), f_obj(), [SUNS]]
 
-    # show_tree(states, play, nick, 0)
     print('Total nodes in the tree: %d' % count_nodes(states))
 
     choice, value = minimax_alpha_beta(states, depth_analysis, play, True, -math.inf, math.inf)
 
-    # print('Choose f()=%f' % value)
-    # print('State_%s_' % choice[0])
-
     next_move = get_next_move(states, choice)
-
-    # print('Next_%s_' % next_move[0])
-    # input('Trash')
 
     return next_move[0]
 
