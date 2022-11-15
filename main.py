@@ -115,8 +115,8 @@ def position(piece, pos):
         return pawn_table[pos]
 
 
-# Função sobre ameaça, recebe o tabuleiro e uma peça e retorna uma pontuação dado o quão ameaçada ela está
-def threat(board, piece):
+# Função sobre ameaça ativa, recebe o tabuleiro e uma peça e retorna uma pontuação dado a quantidade que ela ameaça
+def active_threat(board, piece):
     # Declaração das peças brancas e pretas em modo ‘string’
     # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
     w = 'abcdefghijklmnop'
@@ -166,6 +166,7 @@ def threat(board, piece):
             elif o in b:
                 res.append(o)
                 break
+        return res
     elif piece == 'b' or piece == 'g':  # Cavalo branco
         # Ciclo que percorre o tabuleiro em L
         for i in range(1, 3):  # Nordeste
@@ -204,6 +205,7 @@ def threat(board, piece):
             elif o in b:
                 res.append(o)
                 break
+        return res
     elif piece == 'c' or piece == 'f':  # Bispo branco
         # Ciclo que percorre o tabuleiro diagonalmente
         for i in range(1, 8):  # Nordeste
@@ -242,6 +244,7 @@ def threat(board, piece):
             elif o in b:
                 res.append(o)
                 break
+        return res
     elif piece == 'd':  # Rainha branca
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 8):  # Norte
@@ -316,6 +319,7 @@ def threat(board, piece):
             elif o in b:
                 res.append(o)
                 break
+        return res
     elif piece == 'e':  # Rei branco
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 2):  # Norte (1 casa)
@@ -391,6 +395,7 @@ def threat(board, piece):
             elif o in b:
                 res.append(o)
                 break
+        return res
     elif piece == 'A' or piece == 'H':  # Torre preta
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 8):  # Norte
@@ -429,6 +434,7 @@ def threat(board, piece):
             elif o in w:
                 res.append(o)
                 break
+        return res
     elif piece == 'B' or piece == 'G':  # Cavalo preto
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 3):  # Norte
@@ -479,6 +485,7 @@ def threat(board, piece):
                 elif o in w:
                     res.append(o)
                     break
+        return res
     elif piece == 'C' or piece == 'F':  # Bispo preto
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 8):  # Nordeste
@@ -517,6 +524,7 @@ def threat(board, piece):
             elif o in w:
                 res.append(o)
                 break
+        return res
     elif piece == 'D':  # Rainha preta
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 8):  # Norte
@@ -591,6 +599,7 @@ def threat(board, piece):
             elif o in w:
                 res.append(o)
                 break
+        return res
     elif piece == 'E':  # Rei Preto
         # Ciclo que percorre o tabuleiro em todas as direções
         for i in range(1, 2):  # Norte
@@ -665,8 +674,62 @@ def threat(board, piece):
             elif o in w:
                 res.append(o)
                 break
+        return res
 
+    # Caso não seja uma peça válida, retorna uma lista vazia
     return res
+
+
+# Função sobre ameaça passiva, recebe o tabuleiro e uma peça e retorna uma pontuação dado a ameaça sofrida
+def passive_threat(board, piece):
+    # Declaração das peças brancas e pretas em modo ‘string’
+    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+    w = 'abcdefghijklmnop'
+    b = 'ABCDEFGHIJKLMNOP'
+
+    # Conjunto de peças que podem ameaçar a peça
+    res = []
+    # Declaração da variável de posição da peça
+    pos = board.find(piece)
+    # Declaração da variável de posição da peça (2D)
+    pos2 = pos1_to_pos2(pos)
+
+    # POR FAZER
+
+
+# Função empate, recebe o tabuleiro e avalia se existe possibilidade de não existir checkmates
+def stalemate(board):
+    # Caso ambos os lados tenham um rei solitário, o jogo é empate
+    if board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 2:
+        return True
+    # Caso um lado tenha um rei e uma peça menor e o outro lado tenha um rei solitário, o jogo é empate
+    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 3:
+        if board.count('i') == 1 or board.count('j') == 1 or board.count('k') == 1 or board.count(
+                'l') == 1 or board.count('m') == 1 or board.count('n') == 1 or board.count('o') == 1 or board.count(
+            'p') == 1 or board.count('I') == 1 or board.count('J') == 1 or board.count('K') == 1 or board.count(
+            'L') == 1 or board.count('M') == 1 or board.count('N') == 1 or board.count('O') == 1 or board.count(
+            'P') == 1:
+            return True
+    # Caso ambos os lados tenham um rei e um bispo no mesmo quadrado de cor, o jogo é empate
+    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
+        # Caso ambos os bipos estejam no mesmo quadrado de cor
+        if board.count('f') == 1 and board.count('F') == 1 or board.count('c') == 1 and board.count('C') == 1:
+            return True
+    # Caso estejam 2 cavalos contra um rei solitário, o jogo é empate
+    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
+        if board.count('b') == 1 and board.count('B') == 1 or board.count('g') == 1 and board.count('G') == 1:
+            return True
+    # Caso ambos os lados tenham um rei e uma peça menor, o jogo é empate
+    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
+        if board.count('i') == 1 or board.count('j') == 1 or board.count('k') == 1 or board.count(
+                'l') == 1 or board.count('m') == 1 or board.count('n') == 1 or board.count('o') == 1 or board.count(
+            'p') == 1 and board.count('I') == 1 or board.count('J') == 1 or board.count('K') == 1 or board.count(
+            'L') == 1 or board.count('M') == 1 or board.count('N') == 1 or board.count('O') == 1 or board.count(
+            'P') == 1:
+            return True
+
+    # Caso não seja empate, retorna falso
+    return False
 
 
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
@@ -687,6 +750,11 @@ def f_obj(board, play):
     # Declaração da variavel que representa a quantidades de peças brancas a ameaçar
     score_w_threats = 0
 
+    # Caso seja um caso de empate
+    if stalemate(board):
+        # Retorna 0
+        return 0
+
     for i, p in enumerate(w):
         # Procura se o tabuleiro a analisar contêm essa peça
         ex = board.find(p)
@@ -697,7 +765,7 @@ def f_obj(board, play):
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
             score_w_positions += position(p, ex)
             # Declaração de variavel que guarda as peças em ameaça
-            threats = threat(board, p)
+            threats = active_threat(board, p)
             # Caso esteja a ameaçar uma rainha ou um rei preto
             if 'D' in threats or 'E' in threats:
                 # Aumenta a pontuação
@@ -727,7 +795,7 @@ def f_obj(board, play):
             # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
             score_b_positions += position(p, ex)
             # Declaração de variavel que guarda as peças em ameaça
-            threats = threat(board, p)
+            threats = active_threat(board, p)
             # Caso esteja a ameaçar uma rainha ou um rei branco
             if 'd' in threats or 'e' in threats:
                 # Aumenta a pontuação
