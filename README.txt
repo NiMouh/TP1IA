@@ -86,3 +86,4 @@ Contêm o seguinte processo de análise:
 # Tentativa de abordagem
 https://www.chessprogramming.org/PV-Move
 https://www.chessprogramming.org/Guard_Heuristic
+=======
