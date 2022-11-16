@@ -86,5 +86,3 @@ Contêm o seguinte processo de análise:
 # Tentativa de abordagem
 https://www.chessprogramming.org/PV-Move
 https://www.chessprogramming.org/Guard_Heuristic
-=======
-— Após determinar qual a peça em questão, irá ser dado uma valoração á variavel 'score_w_threats' ou 'score_b_threats', dependendo do jogador que a tem, relativamente á importância dessa peça no jogo.

@@ -139,41 +139,6 @@ def position(piece, pos, play):
         return pawn_table[pos]
 
 
-# Função empate, recebe o tabuleiro e avalia se existe possibilidade de não existir checkmates
-def stalemate(board):
-    # Caso ambos os lados tenham um rei solitário, o jogo é empate
-    if board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 2:
-        return True
-    # Caso um lado tenha um rei e uma peça menor e o outro lado tenha um rei solitário, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 3:
-        if board.count('i') == 1 or board.count('j') == 1 or board.count('k') == 1 or board.count(
-                'l') == 1 or board.count('m') == 1 or board.count('n') == 1 or board.count('o') == 1 or board.count(
-            'p') == 1 or board.count('I') == 1 or board.count('J') == 1 or board.count('K') == 1 or board.count(
-            'L') == 1 or board.count('M') == 1 or board.count('N') == 1 or board.count('O') == 1 or board.count(
-            'P') == 1:
-            return True
-    # Caso ambos os lados tenham um rei e um bispo no mesmo quadrado de cor, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
-        # Caso ambos os bipos estejam no mesmo quadrado de cor
-        if board.count('f') == 1 and board.count('F') == 1 or board.count('c') == 1 and board.count('C') == 1:
-            return True
-    # Caso estejam 2 cavalos contra um rei solitário, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
-        if board.count('b') == 1 and board.count('B') == 1 or board.count('g') == 1 and board.count('G') == 1:
-            return True
-    # Caso ambos os lados tenham um rei e uma peça menor, o jogo é empate
-    elif board.count('e') == 1 and board.count('E') == 1 and board.count('z') == len(board) - 4:
-        if board.count('i') == 1 or board.count('j') == 1 or board.count('k') == 1 or board.count(
-                'l') == 1 or board.count('m') == 1 or board.count('n') == 1 or board.count('o') == 1 or board.count(
-            'p') == 1 and board.count('I') == 1 or board.count('J') == 1 or board.count('K') == 1 or board.count(
-            'L') == 1 or board.count('M') == 1 or board.count('N') == 1 or board.count('O') == 1 or board.count(
-            'P') == 1:
-            return True
-
-    # Caso não seja empate, retorna falso
-    return False
-
-
 # Função sobre ameaça ativa, recebe o tabuleiro e uma peça e retorna uma pontuação dado a quantidade que ela ameaça
 def active_threat(board, piece):
     # Declaração das peças brancas e pretas em modo ‘string’
