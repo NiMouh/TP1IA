@@ -100,3 +100,9 @@ O "Move ordering" pode ser implementado de duas maneiras:
 
 https://www.chessprogramming.org/PV-Move
 https://www.chessprogramming.org/Guard_Heuristic
+
+
+# COISAS A TENTAR FAZER
+
+- FAZER TABELA PARA O REI NO ENDGAME
+- DETERMINAR QUANDO ESTAMOS NO ENDGAME E QUANDO ESTAMOS NO MIDDLE GAME
