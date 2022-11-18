@@ -129,7 +129,7 @@ def position(piece, pos, play):
         # Senão retorna a pontuação da tabela de posição do rei
         return king_table[pos]
 
-    # Se a peça for um peão (está entre i e p)
+    # Se a peça for um peão (está entre 'i' e 'p')
     else:
         # Caso sejam as brancas
         if play == 1:
@@ -745,6 +745,10 @@ def f_obj(board, play):
             if 'C' in threats or 'F' in threats or 'B' in threats or 'G' in threats:
                 # Aumenta a pontuação
                 score_w_threats += 3
+        # Caso a peça não exista no tabuleiro
+        else:
+            # Diminui a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
+            score_w -= pts[i]
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -775,6 +779,10 @@ def f_obj(board, play):
             if 'c' in threats or 'f' in threats or 'b' in threats or 'g' in threats:
                 # Aumenta a pontuação
                 score_b_threats += 3
+        # Caso a peça não exista no tabuleiro
+        else:
+            # Diminui a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
+            score_b -= pts[i]
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
