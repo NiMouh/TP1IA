@@ -10,6 +10,11 @@ depth_analysis = 3
 # Declaração da valoração de cada uma das peças
 pts = [50, 30, 35, 90, 900, 35, 30, 50, 10, 10, 10, 10, 10, 10, 10, 10]
 
+# Declaração das peças brancas e pretas em modo ‘string’
+# a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
+w = 'abcdefghijklmnop'
+b = 'ABCDEFGHIJKLMNOP'
+
 
 def pos2_to_pos1(x2):
     return x2[0] * 8 + x2[1]
@@ -87,7 +92,7 @@ def position(piece, pos, play):
     # Se a peça for um cavalo ('a' e 'h')
     if piece == 'a' or piece == 'A' or piece == 'h' or piece == 'H':
         # Caso sejam as brancas
-        if play == 1:
+        if play:
             # Retorna a pontuação da tabela de posição do cavalo (invertida)
             return list(reversed(knight_table))[pos]
         # Senão retorna a pontuação da tabela de posição do cavalo
@@ -96,7 +101,7 @@ def position(piece, pos, play):
     # Se a peça for um bispo ('b' e 'g')
     elif piece == 'b' or piece == 'B' or piece == 'g' or piece == 'G':
         # Caso sejam as brancas
-        if play == 1:
+        if play:
             # Retorna a pontuação da tabela da posição do bispo (invetida)
             return list(reversed(bishop_table))[pos]
         # Senão retorna a pontuação da tabela de posição do bispo
@@ -105,7 +110,7 @@ def position(piece, pos, play):
     # Se a peça for uma torre ('c' e 'f')
     elif piece == 'c' or piece == 'C' or piece == 'f' or piece == 'F':
         # Caso sejam as brancas
-        if play == 1:
+        if play:
             # Retorna a pontuação da tabela de posição da torre (invertida)
             return list(reversed(rook_table))[pos]
         # Senão retorna a pontuação da tabela de posição da torre
@@ -114,7 +119,7 @@ def position(piece, pos, play):
     # Se a peça for uma rainha ('d')
     elif piece == 'd' or piece == 'D':
         # Caso sejam as brancas
-        if play == 1:
+        if play:
             # Retorna a pontuação da tabela de posição da rainha (invertida)
             return list(reversed(queen_table))[pos]
         # Senão retorna a pontuação da tabela de posição da rainha
@@ -123,7 +128,7 @@ def position(piece, pos, play):
     # Se a peça for um rei ('e')
     elif piece == 'e' or piece == 'E':
         # Caso sejam as brancas
-        if play == 1:
+        if play:
             # Retorna a pontuação da tabela de posição do rei (invertida)
             return list(reversed(king_table))[pos]
         # Senão retorna a pontuação da tabela de posição do rei
@@ -132,7 +137,7 @@ def position(piece, pos, play):
     # Se a peça for um peão (está entre 'i' e 'p')
     else:
         # Caso sejam as brancas
-        if play == 1:
+        if play:
             # Retorna a pontuação da tabela de posição do peão (invertida)
             return list(reversed(pawn_table))[pos]
         # Senão retorna a pontuação da tabela de posição do peão
@@ -141,10 +146,7 @@ def position(piece, pos, play):
 
 # Função sobre ameaça ativa, recebe o tabuleiro e uma peça e retorna uma pontuação dado a quantidade que ela ameaça
 def active_threat(board, piece):
-    # Declaração das peças brancas e pretas em modo ‘string’
-    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
-    w = 'abcdefghijklmnop'
-    b = 'ABCDEFGHIJKLMNOP'
+    global w, b
 
     # Conjunto de peças que podem ameaçar a peça
     res = []
@@ -707,10 +709,8 @@ def active_threat(board, piece):
 # Função objetivo, recebe o estado atual e o qual jogador é que esta a ser jogado com
 # (1 para as brancas 0 para as pretas)
 def f_obj(board, play):
-    # Declaração das peças brancas e pretas em modo ‘string’
-    # a, h = torres; b,g = cavalos; c,f =bispo; d= rainha; e = rei; restantes = peões
-    w = 'abcdefghijklmnop'
-    b = 'ABCDEFGHIJKLMNOP'
+    # Declaração de variáveis
+    global w, b
 
     # Declaração da valoração de cada uma das peças
     global pts
@@ -729,26 +729,22 @@ def f_obj(board, play):
         if ex >= 0:
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_w += pts[i]
-            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos brancos)
+            # Aumenta a pontuação da posição tendo em conta a posição dela (do lado dos brancos)
             score_w_positions += position(p, ex, 1)
             # Declaração de variavel que guarda as peças em ameaça
             threats = active_threat(board, p)
             # Caso esteja a ameaçar uma rainha ou um rei preto
             if 'D' in threats or 'E' in threats:
                 # Aumenta a pontuação
-                score_w_threats += 10
+                score_w_threats -= 10
             # Caso esteja a ameaçar uma torre preta
             if 'A' in threats or 'H' in threats:
                 # Aumenta a pontuação
-                score_w_threats += 5
+                score_w_threats -= 5
             # Caso esteja a ameaçar um bispo preto ou um cavalo preto
             if 'C' in threats or 'F' in threats or 'B' in threats or 'G' in threats:
                 # Aumenta a pontuação
-                score_w_threats += 3
-        # Caso a peça não exista no tabuleiro
-        else:
-            # Diminui a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
-            score_w -= pts[i]
+                score_w_threats -= 3
 
     # Declaração da variavel que representa a pontuação obtida pelas peças pretas
     score_b = 0
@@ -763,47 +759,28 @@ def f_obj(board, play):
         if ex >= 0:
             # Aumenta a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
             score_b += pts[i]
-            # Aumenta a pontuação da posição dentro em conta o peso e a posição dela (eixo) dos x (do lado dos pretos)
+            # Aumenta a pontuação da posição tendo em conta a posição dela (do lado dos pretos)
             score_b_positions += position(p, ex, 0)
             # Declaração de variavel que guarda as peças em ameaça
             threats = active_threat(board, p)
             # Caso esteja a ameaçar uma rainha ou um rei branco
             if 'd' in threats or 'e' in threats:
                 # Aumenta a pontuação
-                score_b_threats += 10
+                score_b_threats -= 10
             # Caso esteja a ameaçar uma torre branca
             if 'a' in threats or 'h' in threats:
                 # Aumenta a pontuação
-                score_b_threats += 5
+                score_b_threats -= 5
             # Caso esteja a ameaçar um bispo branco ou um cavalo branco
             if 'c' in threats or 'f' in threats or 'b' in threats or 'g' in threats:
                 # Aumenta a pontuação
-                score_b_threats += 3
-        # Caso a peça não exista no tabuleiro
-        else:
-            # Diminui a pontuação tendo em conta a valoração da peça dada na lista 'pts.'
-            score_b -= pts[i]
+                score_b_threats -= 3
 
     # Devolve a pontuação final como a diferença (tanto do número de peças como movimentos feitos)
     # entre as brancas e as pretas multiplicando por a variavel 'play' para determinar se é boa para nós ou má para nós
     # e se o jogador atual tem o melhor controlo do tabuleiro
     return (score_w + score_w_positions + score_w_threats - score_b - score_b_positions - score_b_threats) * pow(-1,
                                                                                                                  play)
-
-
-# OPENINGS — Aberturas
-# Priorizar movimentos onde o cavalo está no centro do tabuleiro e não na borda
-# Priorizar manter o par de bispos
-# Priorizar movimentos onde o jogo é centrado
-# Priorizar movimentos onde o rei fica mais protegido e reforçado
-
-# Priorizar movimentos onde as peças á frente do rei estão protegidas por mais alguma peça
-# Fazer verificação se alguma peça está prestes a comer o rei,
-# e colocar peças á frente do rei para proteger ou mexer o rei
-
-# ENDGAME
-# Favorece posições em que o rei adversário está perto do canto do tabuleiro
-# Incentivar mover o rei perto do rei adversário (incrementar caso existam menos de 3 peças entre eles)
 
 
 def find_node(tr, id):
